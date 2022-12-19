@@ -44,7 +44,9 @@ import '../../Utils/color_constants.dart';
 
 class Looking_for extends StatefulWidget {
   String? fromValue;
-  Looking_for({Key? key, this.fromValue}) : super(key: key);
+  String? gender;
+
+  Looking_for({Key? key, this.fromValue,this.gender}) : super(key: key);
 
   @override
   State<Looking_for> createState() => _Looking_forState();
@@ -143,7 +145,7 @@ class _Looking_forState extends State<Looking_for> {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: "hisheight".tr,
+                                        text: (widget.gender == "Male")?"her height":"hisheight".tr,
                                         style: TextStyle(
                                           color: Color(0xff4D4D4D),
                                           fontWeight: FontWeight.w500,

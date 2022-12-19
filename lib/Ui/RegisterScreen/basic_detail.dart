@@ -3760,7 +3760,7 @@ class _Basic_DetailState extends State<Basic_Detail> {
     'Father',
     'Mother',
     'Relative',
-    'Executive'
+    // 'Executive'
   ];
   String? Createdby;
 

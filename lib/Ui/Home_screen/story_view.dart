@@ -117,7 +117,7 @@ class _StoryViewState extends State<StoryView> {
                     ? Positioned(
                         bottom: 0,
                         child: Container(
-                          height: 90,
+                          height: 150,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
@@ -144,7 +144,7 @@ class _StoryViewState extends State<StoryView> {
                                 widget.aboutMe,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
+                                    color: Colors.white, fontSize: 20),
                               ),
                               color: Colors.transparent
                               // Color(0xff000000).withOpacity(0.5),
@@ -156,10 +156,45 @@ class _StoryViewState extends State<StoryView> {
                     ? Positioned(
                         bottom: 30,
                         child: Container(
-                          // height: 100,
-                          width: MediaQuery.of(context).size.width,
-                          // color: Colors.amber,
-                          child: Row(
+                            // height: 100,
+                            width: MediaQuery.of(context).size.width,
+                            // color: Colors.amber,
+                            child: Column(
+                              children: [
+                                Wrap(
+                                  runSpacing: 10,
+                                  spacing: 10,
+                                  alignment: WrapAlignment.start,
+                                  crossAxisAlignment: WrapCrossAlignment.start,
+                                  children: List.generate(
+                                      widget.hobbies!.length,
+                                      (index) => Container(
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xff000000)
+                                                  .withOpacity(0.5),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 15,
+                                                  right: 15,
+                                                  top: 8,
+                                                  bottom: 10),
+                                              child: Text(
+                                                widget.hobbies![index],
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 18),
+                                              ),
+                                            ),
+                                          )),
+                                )
+                              ],
+                            )
+                            /* Row(
                             children: [
                               Flexible(
                                 child: Wrap(
@@ -170,7 +205,7 @@ class _StoryViewState extends State<StoryView> {
                                         left: 10, right: 8, bottom: 8),
                                     child: Container(
                                       height: 35,
-                                      width: MediaQuery.of(context).size.width / 4,
+                                      width: MediaQuery.of(context).size.width / 3.5,
                                       // padding: EdgeInsets.only(
                                       //     left: 10, right: 10),
                                       // width: widget.hobbies![index].characters.length
@@ -195,8 +230,8 @@ class _StoryViewState extends State<StoryView> {
                                 )),
                               ),
                             ],
-                          ),
-                          /* Wrap(
+                          ), */
+                            /* Wrap(
                             children: List.generate(
                                 widget.hobbies!.length,
                                 (index) => Padding(
@@ -232,7 +267,7 @@ class _StoryViewState extends State<StoryView> {
                                       ),
                                     )),
                           ), */
-                        ),
+                            ),
                       )
                     : Container(),
           ],

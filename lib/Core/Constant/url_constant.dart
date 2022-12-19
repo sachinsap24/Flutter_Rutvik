@@ -90,6 +90,7 @@ const LANGUAGE_UPDATE_URL = BASE_URl + "/selectLang";
 const LIKE_URl = BASE_URl + "/like";
 const DISLIKE_URl = BASE_URl + "/dislike";
 const SET_RECENTLY_VISITED_URL = BASE_URl + "/setRecentVisited";
+const SET_BLUR_URL = BASE_URl + "/setBlur";
 
 const STAR_URL = BASE_URl + "/setStarUser";
 const GET_STAR_PROFILE_URL = BASE_URl + "/getStarByYou";

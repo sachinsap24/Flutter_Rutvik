@@ -10,7 +10,7 @@ class UserAboutMeModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['success'] = this.success;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
@@ -30,6 +30,7 @@ class Data {
   String? mobile;
   String? myselfoneline;
   String? myself;
+  int? blurImage;
   List<ProfileImage>? profileImage;
   List<CoverImage>? coverImage;
 
@@ -37,6 +38,7 @@ class Data {
       {this.address,
       this.religion,
       this.age,
+      this.blurImage,
       this.lookingFor,
       this.pincode,
       this.email,
@@ -51,6 +53,7 @@ class Data {
     address = json['address'];
     religion = json['religion'];
     age = json['age'];
+    blurImage = json['blur_image'];
     lookingFor = json['looking_for'];
     pincode = json['pincode'];
     email = json['email'];
@@ -77,6 +80,7 @@ class Data {
     data['address'] = this.address;
     data['religion'] = this.religion;
     data['age'] = this.age;
+    data['blur_image'] = this.blurImage;
     data['looking_for'] = this.lookingFor;
     data['pincode'] = this.pincode;
     data['email'] = this.email;
@@ -125,5 +129,3 @@ class CoverImage {
     return data;
   }
 }
-
-

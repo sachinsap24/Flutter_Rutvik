@@ -67,7 +67,7 @@ class _ExUploadPictureState extends State<ExUploadPicture> {
       var _compressedImage = await AppHelper.compress(image: image);
       final _sizeInKbAfter = _compressedImage.lengthSync() / 1024;
       print('After Compress $_sizeInKbAfter kb');
-      var _croppedImage = await AppHelper.cropImage(_compressedImage);
+      var _croppedImage = await AppHelper.cropImage(_compressedImage,isCover);
       if (_croppedImage == null) {
         return;
       }

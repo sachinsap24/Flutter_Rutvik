@@ -889,7 +889,7 @@ class AppConstants {
   static const String distancePref = 'Annual Income: ';
   static const String profileVerification = 'Profile Verification';
   static const String profileVerificationPending = 'User Profile \nVerification';
-  static const String verificationNow = 'Verification Now';
+  static const String verificationNow = 'Verify Now';
   static const String matchingProfile = 'Matching Profile From My Profile';
   static const String matchingProfileOther = 'Match Making Profiles From Other';
   static const String matchingProfileMangalKaryam =

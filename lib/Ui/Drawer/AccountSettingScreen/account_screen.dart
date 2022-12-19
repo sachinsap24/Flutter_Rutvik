@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:matrimonial_app/Core/Constant/CommonUtils.dart';
+import 'package:matrimonial_app/Core/Constant/globle.dart';
 import 'package:matrimonial_app/Core/Constant/url_constant.dart';
 import 'package:matrimonial_app/Core/Constant/value_constants.dart';
 import 'package:matrimonial_app/ModelClass/UserPanel_ModelClass/UpdateLanguageModel.dart';
@@ -35,7 +36,6 @@ class Account_Setting extends StatefulWidget {
   State<Account_Setting> createState() => _Account_SettingState();
 }
 
-bool blurImage = false;
 UserAboutMeModel? _userAboutMeModel;
 List<Color> currentGradient = [Color(0xffFC7358), Color(0xffFA2457)];
 Color currentColor = Color.fromARGB(255, 250, 65, 65);
@@ -45,6 +45,7 @@ class _Account_SettingState extends State<Account_Setting> {
   Dio dio = Dio();
   bool requestContact = true;
   bool onlineOffline = true;
+  bool blurImage = false;
   late final Function onChnage;
   int selectedlanguag = 0;
   updateLanguageModel? _languageModel;
@@ -213,7 +214,9 @@ class _Account_SettingState extends State<Account_Setting> {
                                                               .profileImage!
                                                               .length >
                                                           0)
-                                                  ? blurImage == true
+                                                  ? _userAboutMeModel!.data!
+                                                              .blurImage ==
+                                                          1
                                                       ? Blur(
                                                           blur: 1,
                                                           borderRadius:
@@ -299,7 +302,9 @@ class _Account_SettingState extends State<Account_Setting> {
                                                             .profileImage!
                                                             .length >
                                                         0)
-                                                ? blurImage == true
+                                                ? _userAboutMeModel!
+                                                            .data!.blurImage ==
+                                                        1
                                                     ? Blur(
                                                         blur: 1,
                                                         borderRadius:
@@ -633,13 +638,20 @@ class _Account_SettingState extends State<Account_Setting> {
                                     width: 39.0,
                                     height: 25.0,
                                     toggleSize: 16.0,
-                                    value: blurImage,
+                                    value: (_userAboutMeModel != null &&
+                                            _userAboutMeModel!
+                                                    .data!.blurImage ==
+                                                1)
+                                        ? true
+                                        : blurImage,
                                     borderRadius: 30.0,
                                     activeColor: currentColor,
                                     onToggle: (val) {
                                       setState(() {
                                         blurImage = val;
+                                        print("blur image ::: $blurImage");
                                       });
+                                      setBlurAPI(blurImage);
                                     },
                                   ),
                                   SizedBox(width: 16),
@@ -852,6 +864,8 @@ class _Account_SettingState extends State<Account_Setting> {
   }
 
   checkConnection() async {
+    /* SharedPreferences pref = await SharedPreferences.getInstance();
+    blurValue = pref.getInt(BLURIMAGE); */
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
       CommonUtils.showProgressLoading(context);
@@ -875,6 +889,24 @@ class _Account_SettingState extends State<Account_Setting> {
               ],
             );
           });
+    }
+  }
+
+  setBlurAPI(bool imageBlur) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var userToken = pref.getString(USER_TOKEN);
+    final queryParameters = {
+      "token": userToken.toString(),
+    };
+    String queryString = Uri(queryParameters: queryParameters).query;
+    var response = await dio.post(SET_BLUR_URL +
+        "?token=$userToken&set_blur=${blurImage == true ? 1 : 0}");
+    if (response.statusCode == 200) {
+      var result = response.data;
+      getProfileAPI();
+      // blurValue = blurImage == true ? 1 : 0;
+      // pref.setInt(BLURIMAGE, blurValue!);
+      print("blur result ::: ${result['message']}");
     }
   }
 
@@ -1248,21 +1280,21 @@ class _Account_SettingState extends State<Account_Setting> {
                             ),
                             InkWell(
                               onTap: () {
+                                openWhatsApp();
                                 Navigator.pop(context);
                               },
                               child: Image.asset(
-                                ImagePath.eMailMsg,
+                                ImagePath.eWpMsg,
                                 height: 45,
                                 width: 45,
                               ),
                             ),
                             InkWell(
                               onTap: () {
-                                openWhatsApp();
                                 Navigator.pop(context);
                               },
                               child: Image.asset(
-                                ImagePath.eWpMsg,
+                                ImagePath.eMailMsg,
                                 height: 45,
                                 width: 45,
                               ),

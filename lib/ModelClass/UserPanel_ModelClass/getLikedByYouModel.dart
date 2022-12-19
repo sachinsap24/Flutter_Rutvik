@@ -30,6 +30,7 @@ class Data {
   String? lastname;
   String? gender;
   List<ProfileImage>? profileImage;
+  int? blurImage;
   int? userId;
   var age;
   String? maritalStatus;
@@ -43,6 +44,7 @@ class Data {
       this.lastname,
       this.gender,
       this.profileImage,
+      this.blurImage,
       this.userId,
       this.age,
       this.maritalStatus,
@@ -64,6 +66,7 @@ class Data {
     userId = json['user_id'];
     age = json['age'];
     maritalStatus = json['marital_status'];
+    blurImage = json['blur_image'];
     height = json['height'];
     like = json['like'];
     isAgent = json['is_agent'];
@@ -81,6 +84,7 @@ class Data {
     data['user_id'] = this.userId;
     data['age'] = this.age;
     data['marital_status'] = this.maritalStatus;
+    data['blur_image'] = this.blurImage;
     data['height'] = this.height;
     data['like'] = this.like;
     data['is_agent'] = this.isAgent;

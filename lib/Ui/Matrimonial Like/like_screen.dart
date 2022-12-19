@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -11,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:matrimonial_app/Core/Constant/CommonUtils.dart';
 import 'package:matrimonial_app/Core/Constant/url_constant.dart';
 import 'package:matrimonial_app/Core/Constant/value_constants.dart';
+import 'package:matrimonial_app/ModelClass/UserPanel_ModelClass/GetProfile_Details/Get_Basic_Detail_Model.dart';
 import 'package:matrimonial_app/ModelClass/UserPanel_ModelClass/getLikedByYouModel.dart';
 import 'package:matrimonial_app/ModelClass/UserPanel_ModelClass/get_Addarchive_model.dart';
 import 'package:matrimonial_app/ModelClass/UserPanel_ModelClass/get_ArchiveModel.dart';
@@ -18,6 +20,7 @@ import 'package:matrimonial_app/ModelClass/UserPanel_ModelClass/get_Star_profile
 import 'package:matrimonial_app/ModelClass/UserPanel_ModelClass/get_revert_model.dart';
 import 'package:matrimonial_app/ModelClass/delete_archive_model.dart';
 import 'package:matrimonial_app/Ui/Drawer/AccountSettingScreen/account_screen.dart';
+import 'package:matrimonial_app/Ui/Drawer/ProfileScreen/profile_screenn.dart';
 import 'package:matrimonial_app/Ui/Home_screen/Home/User_Detail_Screen.dart';
 import 'package:matrimonial_app/Ui/Matrimonial%20Like/See_All_likeProfile.dart';
 import 'package:matrimonial_app/Ui/Matrimonial%20Like/like_story.dart';
@@ -45,6 +48,7 @@ class _Like_screenState extends State<Like_screen>
   getPrefData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     selectedGender = pref.getString(SELECTGENDER);
+    print("gender :::$selectedGender");
   }
 
   String? likeByYouId;
@@ -145,7 +149,7 @@ class _Like_screenState extends State<Like_screen>
                       child: Text(
                           selectedGender == "Male"
                               /*  genderSelecter == 'Male' */
-                              ? "Like by his".tr
+                              ? "Like by him".tr
                               : "Like by her".tr,
                           style: GoogleFonts.montserrat(
                               fontWeight: FontWeight.w600, fontSize: 13)),
@@ -273,21 +277,49 @@ class _Like_screenState extends State<Like_screen>
                                                               .data![index]
                                                               .profileImage!
                                                               .isNotEmpty
-                                                      ? CachedNetworkImage(
-                                                          imageUrl:
-                                                              _likedByYouModel!
+                                                      ? (_likedByYouModel!
+                                                                  .data![index]
+                                                                  .blurImage ==
+                                                              1)
+                                                          ? ImageFiltered(
+                                                              imageFilter:
+                                                                  ImageFilter.blur(
+                                                                      sigmaX: 5,
+                                                                      sigmaY:
+                                                                          5),
+                                                              child:
+                                                                  CachedNetworkImage(
+                                                                imageUrl: _likedByYouModel!
+                                                                    .data![
+                                                                        index]
+                                                                    .profileImage![
+                                                                        0]
+                                                                    .filePath
+                                                                    .toString(),
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                height: 207,
+                                                                width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                              ),
+                                                            )
+                                                          : CachedNetworkImage(
+                                                              imageUrl: _likedByYouModel!
                                                                   .data![index]
                                                                   .profileImage![
                                                                       0]
                                                                   .filePath
                                                                   .toString(),
-                                                          fit: BoxFit.cover,
-                                                          height: 207,
-                                                          width: MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .width,
-                                                        )
+                                                              fit: BoxFit.cover,
+                                                              height: 207,
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                            )
                                                       : (_likedByYouModel !=
                                                                   null &&
                                                               _likedByYouModel!
@@ -453,7 +485,7 @@ class _Like_screenState extends State<Like_screen>
                                                                               .profileImage!
                                                                               .length
                                                                               .toString()
-                                                                          : "1",
+                                                                          : "",
                                                                       style: TextStyle(
                                                                           color: AppColors
                                                                               .colorWhite,
@@ -822,21 +854,49 @@ class _Like_screenState extends State<Like_screen>
                                                               .data![index]
                                                               .profileImage!
                                                               .isNotEmpty
-                                                      ? CachedNetworkImage(
-                                                          imageUrl:
-                                                              _getStarProfileModel!
+                                                      ? (_getStarProfileModel!
+                                                                  .data![index]
+                                                                  .blurImage ==
+                                                              1)
+                                                          ? ImageFiltered(
+                                                              imageFilter:
+                                                                  ImageFilter.blur(
+                                                                      sigmaX: 5,
+                                                                      sigmaY:
+                                                                          5),
+                                                              child:
+                                                                  CachedNetworkImage(
+                                                                imageUrl: _getStarProfileModel!
+                                                                    .data![
+                                                                        index]
+                                                                    .profileImage![
+                                                                        0]
+                                                                    .filePath
+                                                                    .toString(),
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                height: 207,
+                                                                width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                              ),
+                                                            )
+                                                          : CachedNetworkImage(
+                                                              imageUrl: _getStarProfileModel!
                                                                   .data![index]
                                                                   .profileImage![
                                                                       0]
                                                                   .filePath
                                                                   .toString(),
-                                                          fit: BoxFit.cover,
-                                                          height: 207,
-                                                          width: MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .width,
-                                                        )
+                                                              fit: BoxFit.cover,
+                                                              height: 207,
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                            )
                                                       : (_getStarProfileModel != null &&
                                                               _getStarProfileModel!
                                                                       .data !=
@@ -1583,7 +1643,7 @@ class _Like_screenState extends State<Like_screen>
                                                   color: Color(0xffECECEC)),
                                               borderRadius:
                                                   BorderRadius.circular(20),
-                                              image: _getArchiveModel!.data !=
+                                              /*   image: _getArchiveModel!.data !=
                                                           null &&
                                                       _getArchiveModel!
                                                               .data![index]
@@ -1591,12 +1651,14 @@ class _Like_screenState extends State<Like_screen>
                                                               .length >
                                                           0
                                                   ? DecorationImage(
-                                                      image: NetworkImage(
-                                                          _getArchiveModel!
-                                                              .data![index]
-                                                              .profileImage![0]
-                                                              .filePath
-                                                              .toString()),
+                                                      image:
+                                                          CachedNetworkImageProvider(
+                                                              _getArchiveModel!
+                                                                  .data![index]
+                                                                  .profileImage![
+                                                                      0]
+                                                                  .filePath
+                                                                  .toString()),
                                                       fit: BoxFit.cover)
                                                   : DecorationImage(
                                                       fit: BoxFit.cover,
@@ -1611,242 +1673,328 @@ class _Like_screenState extends State<Like_screen>
                                                               ImagePath
                                                                   .femaleProfileUser,
                                                             ),
-                                                    ),
+                                                    ), */
                                             ),
-                                            child: Column(
+                                            child: Stack(
                                               children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: 10,
-                                                      right: 0,
-                                                      left: 8),
-                                                  child: Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      isDeleteSelected
-                                                          ? GestureDetector(
-                                                              onTap: () {
-                                                                print(
-                                                                    "tap to select");
-                                                                setState(() {
-                                                                  isDeleteSelected =
-                                                                      true;
-                                                                  archiveDeleteList[
-                                                                          index]
-                                                                      .isSelected = !archiveDeleteList[
-                                                                          index]
-                                                                      .isSelected!;
-                                                                });
-                                                                if (archiveDeleteList[
-                                                                            index]
-                                                                        .isSelected ==
-                                                                    true) {
-                                                                  deleteIdList.add(
-                                                                      _getArchiveModel!
-                                                                          .data![
-                                                                              index]
-                                                                          .userId);
-                                                                } else {
-                                                                  for (var i =
-                                                                          0;
-                                                                      i <
-                                                                          deleteIdList
-                                                                              .length;
-                                                                      i++) {
-                                                                    if (archiveDeleteList[index]
-                                                                            .isSelected ==
-                                                                        false) {
-                                                                      if (deleteIdList[
-                                                                              i] ==
-                                                                          _getArchiveModel!
-                                                                              .data![index]
-                                                                              .userId) {
-                                                                        deleteIdList
-                                                                            .removeAt(i);
-                                                                      }
-                                                                    }
-                                                                  }
-                                                                }
-
-                                                                log("delete list ::: $deleteIdList");
-                                                              },
-                                                              child: Icon(
-                                                                archiveDeleteList[index]
-                                                                            .isSelected ==
-                                                                        true
-                                                                    ? Icons
-                                                                        .check_box
-                                                                    : Icons
-                                                                        .check_box_outline_blank,
-                                                                color:
-                                                                    Colors.red,
-                                                              ))
-                                                          : GestureDetector(
-                                                              onTap: () {
-                                                                setState(() {
-                                                                  _deleteDialogBox(
-                                                                      index);
-                                                                });
-                                                              },
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.0),
+                                                  child: _getArchiveModel !=
+                                                              null &&
+                                                          _getArchiveModel!
+                                                                  .data !=
+                                                              null &&
+                                                          _getArchiveModel!
+                                                              .data![index]
+                                                              .profileImage!
+                                                              .isNotEmpty
+                                                      ? (_getArchiveModel!
+                                                                  .data![index]
+                                                                  .blurImage ==
+                                                              1)
+                                                          ? ImageFiltered(
+                                                              imageFilter:
+                                                                  ImageFilter.blur(
+                                                                      sigmaX: 5,
+                                                                      sigmaY:
+                                                                          5),
                                                               child:
-                                                                  Image.asset(
-                                                                ImagePath
-                                                                    .likecross,
-                                                                width: 28,
-                                                                height: 28,
+                                                                  CachedNetworkImage(
+                                                                imageUrl: _getArchiveModel!
+                                                                    .data![
+                                                                        index]
+                                                                    .profileImage![
+                                                                        0]
+                                                                    .filePath
+                                                                    .toString(),
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                height: 207,
+                                                                width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
                                                               ),
+                                                            )
+                                                          : CachedNetworkImage(
+                                                              imageUrl: _getArchiveModel!
+                                                                  .data![index]
+                                                                  .profileImage![
+                                                                      0]
+                                                                  .filePath
+                                                                  .toString(),
+                                                              fit: BoxFit.cover,
+                                                              height: 207,
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                            )
+                                                      : (_getArchiveModel !=
+                                                                  null &&
+                                                              _getArchiveModel!
+                                                                      .data !=
+                                                                  null &&
+                                                              _getArchiveModel!
+                                                                      .data![
+                                                                          index]
+                                                                      .gender ==
+                                                                  "Male")
+                                                          ? Image.asset(
+                                                              ImagePath.profile,
+                                                              fit: BoxFit.cover,
+                                                              height: 207,
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                            )
+                                                          : Image.asset(
+                                                              ImagePath
+                                                                  .femaleProfileUser,
+                                                              fit: BoxFit.cover,
+                                                              height: 207,
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
                                                             ),
-                                                      SizedBox(
-                                                        width: 15,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 8.0),
-                                                        child: Container(
-                                                          height: 20,
-                                                          width: 34,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                    0xff000000)
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        50),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                              left: 6,
-                                                            ),
-                                                            child: Row(
-                                                              children: [
-                                                                Text(
-                                                                  _getArchiveModel!
-                                                                              .data !=
-                                                                          null
-                                                                      ? _getArchiveModel!
-                                                                          .data![
-                                                                              index]
-                                                                          .profileImage!
-                                                                          .length
-                                                                          .toString()
-                                                                      : "0",
-                                                                  style: TextStyle(
-                                                                      color: AppColors
-                                                                          .colorWhite,
-                                                                      fontSize:
-                                                                          10,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                Image.asset(
-                                                                  ImagePath
-                                                                      .camera,
-                                                                  height: 12,
-                                                                  width: 12,
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
                                                 ),
-                                                Spacer(),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 0),
-                                                  child: Container(
-                                                    height: 34,
-                                                    decoration: BoxDecoration(
-                                                      color: Color(0xffffffff)
-                                                          .withOpacity(0.9),
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                        bottomRight:
-                                                            Radius.circular(13),
-                                                        bottomLeft:
-                                                            Radius.circular(13),
-                                                      ),
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 8,
-                                                              right: 14),
+                                                Column(
+                                                  children: [
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 10,
+                                                          right: 0,
+                                                          left: 8),
                                                       child: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .spaceBetween,
                                                         children: [
-                                                          Expanded(
-                                                            child: Text(
-                                                              _getArchiveModel!
-                                                                          .data !=
-                                                                      null
-                                                                  ? _getArchiveModel!
+                                                          isDeleteSelected
+                                                              ? GestureDetector(
+                                                                  onTap: () {
+                                                                    print(
+                                                                        "tap to select");
+                                                                    setState(
+                                                                        () {
+                                                                      isDeleteSelected =
+                                                                          true;
+                                                                      archiveDeleteList[
+                                                                              index]
+                                                                          .isSelected = !archiveDeleteList[
+                                                                              index]
+                                                                          .isSelected!;
+                                                                    });
+                                                                    if (archiveDeleteList[index]
+                                                                            .isSelected ==
+                                                                        true) {
+                                                                      deleteIdList.add(_getArchiveModel!
                                                                           .data![
                                                                               index]
-                                                                          .firstname
-                                                                          .toString() +
-                                                                      " " +
-                                                                      _getArchiveModel!
-                                                                          .data![
-                                                                              index]
-                                                                          .lastname
-                                                                          .toString()
-                                                                  : AppConstants
-                                                                      .joseph,
-                                                              maxLines: 1,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: fontStyle
-                                                                  .copyWith(
-                                                                      color: Colors
-                                                                          .black),
-                                                            ),
+                                                                          .userId);
+                                                                    } else {
+                                                                      for (var i =
+                                                                              0;
+                                                                          i < deleteIdList.length;
+                                                                          i++) {
+                                                                        if (archiveDeleteList[index].isSelected ==
+                                                                            false) {
+                                                                          if (deleteIdList[i] ==
+                                                                              _getArchiveModel!.data![index].userId) {
+                                                                            deleteIdList.removeAt(i);
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+
+                                                                    log("delete list ::: $deleteIdList");
+                                                                  },
+                                                                  child: Icon(
+                                                                    archiveDeleteList[index].isSelected ==
+                                                                            true
+                                                                        ? Icons
+                                                                            .check_box
+                                                                        : Icons
+                                                                            .check_box_outline_blank,
+                                                                    color: Colors
+                                                                        .red,
+                                                                  ))
+                                                              : GestureDetector(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      _deleteDialogBox(
+                                                                          index);
+                                                                    });
+                                                                  },
+                                                                  child: Image
+                                                                      .asset(
+                                                                    ImagePath
+                                                                        .likecross,
+                                                                    width: 28,
+                                                                    height: 28,
+                                                                  ),
+                                                                ),
+                                                          SizedBox(
+                                                            width: 15,
                                                           ),
-                                                          (_getArchiveModel !=
-                                                                      null &&
-                                                                  _getArchiveModel!
-                                                                          .data !=
-                                                                      null &&
-                                                                  _getArchiveModel!
-                                                                          .data![
-                                                                              index]
-                                                                          .isAgent ==
-                                                                      "0")
-                                                              ? Image.asset(
-                                                                  ImagePath
-                                                                      .blackuse,
-                                                                  color:
-                                                                      currentColor,
-                                                                  width: 22,
-                                                                  height: 22,
-                                                                )
-                                                              : Container()
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right: 8.0),
+                                                            child: Container(
+                                                              height: 20,
+                                                              width: 34,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Color(
+                                                                        0xff000000)
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            50),
+                                                              ),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  left: 6,
+                                                                ),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Text(
+                                                                      _getArchiveModel!.data !=
+                                                                              null
+                                                                          ? _getArchiveModel!
+                                                                              .data![index]
+                                                                              .profileImage!
+                                                                              .length
+                                                                              .toString()
+                                                                          : "0",
+                                                                      style: TextStyle(
+                                                                          color: AppColors
+                                                                              .colorWhite,
+                                                                          fontSize:
+                                                                              10,
+                                                                          fontWeight:
+                                                                              FontWeight.w500),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 5,
+                                                                    ),
+                                                                    Image.asset(
+                                                                      ImagePath
+                                                                          .camera,
+                                                                      height:
+                                                                          12,
+                                                                      width: 12,
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          )
                                                         ],
                                                       ),
                                                     ),
-                                                  ),
+                                                    Spacer(),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 0),
+                                                      child: Container(
+                                                        height: 34,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Color(
+                                                                  0xffffffff)
+                                                              .withOpacity(0.9),
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    13),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    13),
+                                                          ),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 8,
+                                                                  right: 14),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Expanded(
+                                                                child: Text(
+                                                                  _getArchiveModel!
+                                                                              .data !=
+                                                                          null
+                                                                      ? _getArchiveModel!
+                                                                              .data![
+                                                                                  index]
+                                                                              .firstname
+                                                                              .toString() +
+                                                                          " " +
+                                                                          _getArchiveModel!
+                                                                              .data![
+                                                                                  index]
+                                                                              .lastname
+                                                                              .toString()
+                                                                      : AppConstants
+                                                                          .joseph,
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style: fontStyle
+                                                                      .copyWith(
+                                                                          color:
+                                                                              Colors.black),
+                                                                ),
+                                                              ),
+                                                              (_getArchiveModel != null &&
+                                                                      _getArchiveModel!
+                                                                              .data !=
+                                                                          null &&
+                                                                      _getArchiveModel!
+                                                                              .data![index]
+                                                                              .isAgent ==
+                                                                          "0")
+                                                                  ? Image.asset(
+                                                                      ImagePath
+                                                                          .blackuse,
+                                                                      color:
+                                                                          currentColor,
+                                                                      width: 22,
+                                                                      height:
+                                                                          22,
+                                                                    )
+                                                                  : Container()
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
@@ -1964,11 +2112,13 @@ class _Like_screenState extends State<Like_screen>
   void checkConnection() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
+      getBasicDetail();
       getLikedByYouAPi();
       getArchiveAPi();
       getStarProfile();
       //getDeleteArchive();
     } else if (connectivityResult == ConnectivityResult.wifi) {
+      getBasicDetail();
       getLikedByYouAPi();
       getArchiveAPi();
       getStarProfile();
@@ -1989,6 +2139,37 @@ class _Like_screenState extends State<Like_screen>
               ],
             );
           });
+    }
+  }
+
+  getBasicDetail() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var token = pref.getString(USER_TOKEN);
+    final queryParameters = {"token": token.toString()};
+    String queryString = Uri(queryParameters: queryParameters).query;
+    var response = await dio.get(GET_BASIC_DETAIL_URL + "?" + queryString);
+    if (response.statusCode == 200) {
+      CommonUtils.hideProgressLoading();
+      GetBasicDetailModel _getBasicDetailModel =
+          GetBasicDetailModel.fromJson(response.data);
+      setState(() {
+        selectedGender = _getBasicDetailModel.data!.gender.toString();
+      });
+    } else if (response.statusCode == 429) {
+      CommonUtils.hideProgressLoading();
+      getBasicDetail();
+    } else if (response.statusCode == 500) {
+      CommonUtils.hideProgressLoading();
+      Fluttertoast.showToast(
+          msg: "Internal Server Error",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Color(0xffE16284),
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      // CommonUtils.hideProgressLoading();
     }
   }
 

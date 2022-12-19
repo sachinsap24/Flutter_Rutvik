@@ -39,7 +39,7 @@ class _Adharcardselfi_screenState extends State<Adharcardselfi_screen> {
       var _compressedImage = await AppHelper.compress(image: image);
       final _sizeInKbAfter = _compressedImage.lengthSync() / 1024;
       print('After Compress $_sizeInKbAfter kb');
-      var _croppedImage = await AppHelper.cropImage(_compressedImage);
+      var _croppedImage = await AppHelper.cropImage(_compressedImage,true);
       if (_croppedImage == null) {
         return;
       }

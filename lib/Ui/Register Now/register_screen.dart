@@ -90,7 +90,7 @@ class _Register_screenState extends State<Register_screen> {
                         child: Image.asset(ImagePath.appLogo),
                       ),
                       SizedBox(
-                        height: 16,
+                        height: 8,
                       ),
                       Container(
                         height: 50,
@@ -545,7 +545,7 @@ class _Register_screenState extends State<Register_screen> {
                             } */
                           }),
                       SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
                       RichText(
                         text: TextSpan(
@@ -570,7 +570,7 @@ class _Register_screenState extends State<Register_screen> {
                             ]),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,

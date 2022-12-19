@@ -96,7 +96,7 @@ class _LoginState extends State<Login> {
                         child: Image.asset(ImagePath.appLogo),
                       ),
                       SizedBox(
-                        height: 16,
+                        height: 8,
                       ),
                       Container(
                         height: 50,
@@ -580,7 +580,7 @@ class _LoginState extends State<Login> {
                             } */
                           }),
                       SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
                       RichText(
                         text: TextSpan(
@@ -606,7 +606,7 @@ class _LoginState extends State<Login> {
                             ]),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -943,7 +943,7 @@ class _LoginState extends State<Login> {
           context,
           MaterialPageRoute(
               builder: (context) => OTPScreen(
-                    uid: _firstlogin,
+                    isSuccess: _firstlogin.success,
                     mobile: _mobile.text,
                     email: _email.text,
                     countryCode: countryCodeShow,
@@ -969,10 +969,26 @@ class _LoginState extends State<Login> {
         ismobileEmptyChek = false;
         ismobileValidChek = false;
         loginerror = false;
-        setState(() {
+        if (data['success'] == false) {
+          prefs.setBool(SHOWREGISTER, true);
+          prefs.setString(USER_MOBILE, _mobile.text);
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OTPScreen(
+                      isSuccess: data['success'],
+                      mobile: _mobile.text,
+                      email: _email.text,
+                      countryCode: countryCodeShow,
+                      text: '123456',
+                      fromValue: 'Login',
+                    )),
+          );
+        }
+        /*   setState(() {
           isNotAuthorize = data['message'];
           isAuthorize = true;
-        });
+        }); */
 
         // toastMessage("${data["message"]}");
       }
@@ -994,6 +1010,7 @@ class _LoginState extends State<Login> {
           idToken: googleSignInAuthentication.idToken,
         );
         UserCredential result = await _auth.signInWithCredential(credential);
+        CommonUtils.showProgressLoading(context);
         user = result.user;
         if (result != null) {
           setState(() {
@@ -1040,6 +1057,7 @@ class _LoginState extends State<Login> {
           USER_TOKEN,
           socialMediaModel.token.toString(),
         );
+        CommonUtils.hideProgressLoading();
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (context) => Zoom()), (route) => false);
         print("object::: ${response.data}");

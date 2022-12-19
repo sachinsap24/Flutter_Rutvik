@@ -84,7 +84,6 @@ class _TinderCardComponentState extends State<TinderCardComponent> {
   List<ProfileImage> imageList = [];
 
   ValueNotifier<IndicatorAnimationCommand>? indicatorAnimationController;
-  final sampleUsers = [];
   List mainStoryList = [];
   List subStoryList = [];
   bool isTinderLoaded = false;
@@ -102,7 +101,7 @@ class _TinderCardComponentState extends State<TinderCardComponent> {
 
     print(AppConstants.index);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       final size = MediaQuery.of(context).size;
 
       if (isTinderLoaded == false) {
@@ -146,7 +145,8 @@ class _TinderCardComponentState extends State<TinderCardComponent> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<CardProvider>(context, listen: false);
-
+    // print("object ======== ${provider.todayMatchDetailModel!.data!.length}");
+    // print("index ======== ${AppConstants.index}");
     return widget.isFront
         ? AppConstants.index != provider.todayMatchDetailModel!.data!.length
             ? Stack(
@@ -164,8 +164,8 @@ class _TinderCardComponentState extends State<TinderCardComponent> {
                   ),
                 ],
               )
-            :completeYourRegistartionView()
-             /* Center(
+            : completeYourRegistartionView()
+        /* Center(
                 child: Image.asset(
                 ImagePath.noCardImg,
                 fit: BoxFit.fill,
@@ -204,6 +204,7 @@ class _TinderCardComponentState extends State<TinderCardComponent> {
           final users = provider.users;
 
           imageList.clear();
+          // users.clear();
           print("users length ::: ${users.length}");
           for (var i = 0; i < users.length; i++) {
             if (widget.user.userId == users[i].userId) {
@@ -214,12 +215,13 @@ class _TinderCardComponentState extends State<TinderCardComponent> {
               }
             }
           }
-
+          // print("user stroy length ::: ${imageList.length}");
           List<String> storiesList = List.generate(imageList.length, (index) {
             return imageList.isEmpty
                 ? "http://www.goodmorningimagesdownload.com/wp-content/uploads/2019/12/Love-Images-1.jpg"
                 : imageList[index].filePath.toString();
           });
+          print("image list length story :::: ${storiesList.length}");
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -262,58 +264,110 @@ class _TinderCardComponentState extends State<TinderCardComponent> {
   Widget buildCard() {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              image: DecorationImage(
-                image: CachedNetworkImageProvider(
-                  (widget.user.profileImage!.isNotEmpty)
+      child: Stack(
+        children: [
+          Center(
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.64,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  // color: Colors.amber,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all()),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: (widget.user.profileImage!.isNotEmpty)
                       ? widget.user.profileImage!.isEmpty
-                          ? "http://www.goodmorningimagesdownload.com/wp-content/uploads/2019/12/Love-Images-1.jpg"
-                          : widget.user.profileImage![0].filePath.toString()
-                      : "http://www.goodmorningimagesdownload.com/wp-content/uploads/2019/12/Love-Images-1.jpg",
-                ),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      top: 36, right: 8.0, left: 8, bottom: 8),
-                  child: Text("ID : " + widget.user.userId.toString()),
-                ),
-                Spacer(),
-                Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20)),
-                    gradient: LinearGradient(
-                      tileMode: TileMode.mirror,
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: [0, 0.2, 0.8, 1],
-                      colors: [
-                        Colors.transparent,
-                        Colors.black.withOpacity(0.2),
-                        Colors.black.withOpacity(0.6),
-                        Colors.black.withOpacity(0.8),
-                      ],
-                    ),
+                          ? Image.network(
+                              "http://www.goodmorningimagesdownload.com/wp-content/uploads/2019/12/Love-Images-1.jpg",
+                              fit: BoxFit.cover,
+                            )
+                          : (widget.user.blurImage == 1)
+                              ? ImageFiltered(
+                                  imageFilter:
+                                      ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                  child: CachedNetworkImage(
+                                    imageUrl: widget
+                                        .user.profileImage![0].filePath
+                                        .toString(),
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : CachedNetworkImage(
+                                  imageUrl: widget
+                                      .user.profileImage![0].filePath
+                                      .toString(),
+                                  fit: BoxFit.cover,
+                                )
+                      : Image.network(
+                          "http://www.goodmorningimagesdownload.com/wp-content/uploads/2019/12/Love-Images-1.jpg",
+                          fit: BoxFit.cover,
+                        )
+                  /* (widget.user.profileImage!.isNotEmpty)
+                  ? widget.user.profileImage!.isEmpty
+                      ? (widget.user.blurImage == 1)
+                          ? ImageFiltered(
+                              imageFilter:
+                                  ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                              child: CachedNetworkImage(
+                                imageUrl: widget
+                                    .user.profileImage![0].filePath
+                                    .toString(),
+                                fit: BoxFit.cover,
+                                height: 207,
+                                width: MediaQuery.of(context).size.width,
+                              ),
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: widget
+                                  .user.profileImage![0].filePath
+                                  .toString(),
+                              fit: BoxFit.cover,
+                              height: 207,
+                              width: MediaQuery.of(context).size.width,
+                            )
+                      : Image.asset(
+                          "http://www.goodmorningimagesdownload.com/wp-content/uploads/2019/12/Love-Images-1.jpg",
+                        )
+                  : Image.asset(
+                      "http://www.goodmorningimagesdownload.com/wp-content/uploads/2019/12/Love-Images-1.jpg",
+                    ) */
                   ),
-                  child: buildName(),
-                )
-              ],
             ),
           ),
-        ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 36, right: 8.0, left: 8, bottom: 8),
+                child: Text("ID : " + widget.user.userId.toString()),
+              ),
+              Spacer(),
+              Container(
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20)),
+                  gradient: LinearGradient(
+                    tileMode: TileMode.mirror,
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0, 0.2, 0.8, 1],
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withOpacity(0.2),
+                      Colors.black.withOpacity(0.6),
+                      Colors.black.withOpacity(0.8),
+                    ],
+                  ),
+                ),
+                child: buildName(),
+              )
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -789,9 +843,7 @@ class _TinderCardComponentState extends State<TinderCardComponent> {
                   style: appBtnStyle.copyWith(
                       fontWeight: FontWeight.w700, fontSize: 25),
                 ),
-                SizedBox(
-                  width: 3,
-                ),
+                SizedBox(width: 3),
                 Container(
                   // width: widget.user.isAgent == "1" ? 0 : 80,
                   // color: Colors.amber,
@@ -801,7 +853,9 @@ class _TinderCardComponentState extends State<TinderCardComponent> {
                         ? widget.user.isAgent == "1" ||
                                 provider.userCheckModel!.data!.paymentStatus ==
                                     0
-                            ? (widget.user.lastname !="")?widget.user.lastname![0]: ""
+                            ? (widget.user.lastname != "")
+                                ? widget.user.lastname![0]
+                                : ""
                             : widget.user.lastname!
                         : "",
                     maxLines: 1,

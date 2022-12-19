@@ -31,6 +31,7 @@ class Data {
   String? gender;
   List<ProfileImage>? profileImage;
   int? userId;
+  int? blurImage;
   int? age;
   String? maritalStatus;
   String? height;
@@ -43,6 +44,7 @@ class Data {
       this.gender,
       this.profileImage,
       this.userId,
+      this.blurImage,
       this.age,
       this.maritalStatus,
       this.height,
@@ -60,6 +62,7 @@ class Data {
       });
     }
     userId = json['user_id'];
+    blurImage = json['blur_image'];
     age = json['age'];
     maritalStatus = json['marital_status'];
     height = json['height'];
@@ -76,6 +79,7 @@ class Data {
       data['profileImage'] = this.profileImage!.map((v) => v.toJson()).toList();
     }
     data['user_id'] = this.userId;
+    data['blur_image'] = this.blurImage;
     data['age'] = this.age;
     data['marital_status'] = this.maritalStatus;
     data['height'] = this.height;

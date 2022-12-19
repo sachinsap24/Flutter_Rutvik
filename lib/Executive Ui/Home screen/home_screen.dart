@@ -1072,7 +1072,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               width: width * 0.030,
                             ),
-                            Expanded(
+                            Expanded( 
                               child: TextFormField(
                                 onTap: () {
                                   Navigator.push(

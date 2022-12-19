@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:matrimonial_app/Core/Constant/globle.dart';
 import 'package:matrimonial_app/Core/Constant/url_constant.dart';
 import 'package:matrimonial_app/Core/Constant/value_constants.dart';
 import 'package:matrimonial_app/ModelClass/UserPanel_ModelClass/GetProfile_Details/Get_Basic_Detail_Model.dart';
@@ -45,6 +46,7 @@ class Zoom extends StatefulWidget {
 class _ZoomState extends State<Zoom> {
   UserAboutMeModel? _userAboutMeModel;
   GetBasicDetailModel? _getBasicDetailModel;
+  int? blurValue = 0;
 
   @override
   void initState() {
@@ -98,7 +100,7 @@ class _ZoomState extends State<Zoom> {
                                 _userAboutMeModel!.data != null &&
                                 _userAboutMeModel!.data!.profileImage!.length >
                                     0)
-                            ? blurImage == true
+                            ? _userAboutMeModel!.data!.blurImage == 1
                                 ? Blur(
                                     blur: 1,
                                     borderRadius: BorderRadius.circular(50),
@@ -131,6 +133,27 @@ class _ZoomState extends State<Zoom> {
                                     backgroundImage:
                                         AssetImage(ImagePath.femaleProfileUser),
                                   ),
+                      ),
+                      Positioned(
+                        top: 50,
+                        left: 50,
+                        child: Container(
+                          height: 16,
+                          width: 16,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                          alignment: Alignment.center,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xff31F173),
+                            ),
+                            height: 12,
+                            width: 12,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -185,9 +208,10 @@ class _ZoomState extends State<Zoom> {
                     data = result;
                   });
                   if (data == "blurImg") {
-                    setState(() {
-                      blurImage;
-                    });
+                    getProfileAPI();
+                    /* setState(() {
+                      blurValue;
+                    }); */
                   }
                   log("blur image ----------- $data");
                 },
@@ -568,7 +592,7 @@ class _ZoomState extends State<Zoom> {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       setState(() {
-                        blurImage = false;
+                        // blurValue = false;
                         String token = prefs.getString(USER_TOKEN)!;
                         if (token != null) {
                           logout(token);

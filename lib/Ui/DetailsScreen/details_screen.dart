@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -1085,12 +1086,39 @@ class _Detail_screenState extends State<Detail_screen> {
         prefs.setString(
             USER_TOKEN, _personaldetailSuccess.data!.token.toString());
 
-        Navigator.push(
+         /// ----------- firebase chat module start -----------
+        prefs.setString(
+            FULLNAME, _personaldetailSuccess.data!.firstname.toString());
+        String userId = await prefs.getString(USER_ID)!;
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+        await firestore
+            .collection("Users")
+            .doc(result["data"]["user_id"].toString())
+            .set({
+          "userId": result["data"]["user_id"].toString(),
+          "userName": _personaldetailSuccess.data!.firstname,
+          "userProfile": "",
+        }).then(
+          (value) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailScreen2(
+                  userNumber: widget.userNumber,
+                  docId: result["data"]["user_id"].toString()),
+            ),
+          ),
+        );
+
+        /// ----------- firebase chat module end -----------
+
+
+       /*  Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => DetailScreen2(userNumber: widget.userNumber),
           ),
-        );
+        ); */
       } else {
         print("error part");
 

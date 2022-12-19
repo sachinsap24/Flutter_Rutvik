@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,6 +33,7 @@ import 'package:matrimonial_app/Utils/image_path_constants.dart';
 import 'package:matrimonial_app/Utils/text_styles.dart';
 import 'package:matrimonial_app/Utils/value_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../ModelClass/UserPanel_ModelClass/Recently_Visited_You_Model.dart';
 
@@ -490,211 +493,423 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                         BorderRadius.circular(
                                                             18), /* color: currentColor */
                                                   ),
-                                                  child: Padding(
-                                                    padding: EdgeInsets.all(0),
-                                                    child: Container(
-                                                      height: 210,
-                                                      decoration: (_nearYouMatchModel != null &&
-                                                              _nearYouMatchModel!
-                                                                      .data !=
-                                                                  null &&
-                                                              _nearYouMatchModel!
+                                                  child: Container(
+                                                    // height: 210,
+                                                    /*  decoration: (_nearYouMatchModel != null &&
+                                                            _nearYouMatchModel!
+                                                                    .data !=
+                                                                null &&
+                                                            _nearYouMatchModel!
+                                                                    .data![
+                                                                        index]
+                                                                    .profileImage!
+                                                                    .length >
+                                                                0)
+                                                        ? BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        13),
+                                                            image: DecorationImage(
+                                                                image: CachedNetworkImageProvider(_nearYouMatchModel!
+                                                                    .data![
+                                                                        index]
+                                                                    .profileImage![
+                                                                        0]
+                                                                    .filePath
+                                                                    .toString()),
+                                                                fit: BoxFit
+                                                                    .cover),
+                                                          )
+                                                        : BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        13),
+                                                            image: DecorationImage(
+                                                                image: (_nearYouMatchModel != null &&
+                                                                        _nearYouMatchModel!.data !=
+                                                                            null &&
+                                                                        _nearYouMatchModel!.data![index].gender ==
+                                                                            "Male")
+                                                                    ? AssetImage(
+                                                                        ImagePath
+                                                                            .profile)
+                                                                    : AssetImage(
+                                                                        ImagePath
+                                                                            .femaleProfileUser),
+                                                                fit: BoxFit
+                                                                    .cover),
+                                                          ), */
+                                                    child: Stack(
+                                                      children: [
+                                                        ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      13.0),
+                                                          child: _nearYouMatchModel != null &&
+                                                                  _nearYouMatchModel!
+                                                                          .data !=
+                                                                      null &&
+                                                                  _nearYouMatchModel!
                                                                       .data![
                                                                           index]
                                                                       .profileImage!
-                                                                      .length >
-                                                                  0)
-                                                          ? BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          13),
-                                                              image: DecorationImage(
-                                                                  image: CachedNetworkImageProvider(_nearYouMatchModel!
-                                                                      .data![
-                                                                          index]
-                                                                      .profileImage![
-                                                                          0]
-                                                                      .filePath
-                                                                      .toString()),
-                                                                  fit: BoxFit
-                                                                      .cover),
-                                                            )
-                                                          : BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          13),
-                                                              image: DecorationImage(
-                                                                  image: (_nearYouMatchModel != null &&
-                                                                          _nearYouMatchModel!.data !=
-                                                                              null &&
-                                                                          _nearYouMatchModel!.data![index].gender ==
-                                                                              "Male")
-                                                                      ? AssetImage(
-                                                                          ImagePath
-                                                                              .profile)
-                                                                      : AssetImage(
-                                                                          ImagePath
-                                                                              .femaleProfileUser),
-                                                                  fit: BoxFit
-                                                                      .cover),
-                                                            ),
-                                                      child: Column(
-                                                        children: [
-                                                          Spacer(),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    bottom: 0),
-                                                            child: Container(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Color(
-                                                                        0xffffffff)
-                                                                    .withOpacity(
-                                                                        0.9),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .only(
-                                                                  bottomRight: Radius
-                                                                      .circular(
-                                                                          13),
-                                                                  bottomLeft: Radius
-                                                                      .circular(
-                                                                          13),
-                                                                ),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left: 8,
-                                                                        right:
-                                                                            0,
-                                                                        top: 5),
-                                                                child: Column(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .start,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Image
-                                                                            .asset(
-                                                                          ImagePath
-                                                                              .dualprofile,
-                                                                          color:
-                                                                              currentColor,
-                                                                          height:
-                                                                              16,
-                                                                          width:
-                                                                              16,
-                                                                        ),
-                                                                        SizedBox(
-                                                                          width:
+                                                                      .isNotEmpty
+                                                              ? (_nearYouMatchModel!
+                                                                          .data![
+                                                                              index]
+                                                                          .blurImage ==
+                                                                      1)
+                                                                  ? ImageFiltered(
+                                                                      imageFilter: ImageFilter.blur(
+                                                                          sigmaX:
                                                                               5,
-                                                                        ),
-                                                                        Expanded(
-                                                                          child:
-                                                                              Text(
-                                                                            _nearYouMatchModel != null && _nearYouMatchModel!.data != null
-                                                                                ? _nearYouMatchModel!.data![index].firstname.toString() + ', ' + _nearYouMatchModel!.data![index].age.toString()
-                                                                                : AppConstants.joseph,
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis,
-                                                                            maxLines:
-                                                                                1,
-                                                                            style: fontStyle.copyWith(
-                                                                                color: Colors.black,
-                                                                                fontSize: 15,
-                                                                                fontWeight: FontWeight.w600),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                      width: 0,
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .only(
-                                                                          left:
-                                                                              18.0),
-                                                                      child:
-                                                                          Text(
-                                                                        _nearYouMatchModel != null && _nearYouMatchModel!.data != null
-                                                                            ? _nearYouMatchModel!.data![index].gender.toString() +
-                                                                                ' | ' +
-                                                                                _nearYouMatchModel!.data![index].height.toString()
-                                                                            : AppConstants.castText,
-                                                                        style: matchscroll.copyWith(
-                                                                            fontSize:
-                                                                                12,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                            color: Colors.black),
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: 5,
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .only(
-                                                                          left:
-                                                                              0,
-                                                                          right:
-                                                                              8,
-                                                                          bottom:
+                                                                          sigmaY:
                                                                               5),
                                                                       child:
-                                                                          GestureDetector(
-                                                                        onTap:
-                                                                            () {
-                                                                          Navigator.push(
-                                                                              context,
-                                                                              CupertinoPageRoute(
-                                                                                  builder: (context) => Chat_screen(
-                                                                                        image: (_nearYouMatchModel != null && _nearYouMatchModel!.data!.isNotEmpty && _nearYouMatchModel!.data![index].profileImage!.isNotEmpty) ? _nearYouMatchModel!.data![index].profileImage![0].filePath.toString() : "",
-                                                                                        name: _nearYouMatchModel!.data![index].firstname.toString() + ' ' + _nearYouMatchModel!.data![index].lastname.toString(),
-                                                                                      )));
-                                                                        },
-                                                                        child:
-                                                                            Container(
-                                                                          width: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width,
-                                                                          height:
-                                                                              25,
-                                                                          decoration: BoxDecoration(
+                                                                          CachedNetworkImage(
+                                                                        imageUrl: _nearYouMatchModel!
+                                                                            .data![index]
+                                                                            .profileImage![0]
+                                                                            .filePath
+                                                                            .toString(),
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                        height:
+                                                                            235,
+                                                                        width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width,
+                                                                      ),
+                                                                    )
+                                                                  : CachedNetworkImage(
+                                                                      imageUrl: _nearYouMatchModel!
+                                                                          .data![
+                                                                              index]
+                                                                          .profileImage![
+                                                                              0]
+                                                                          .filePath
+                                                                          .toString(),
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                      height:
+                                                                          235,
+                                                                      width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width,
+                                                                    )
+                                                              : (_nearYouMatchModel != null &&
+                                                                      _nearYouMatchModel!
+                                                                              .data !=
+                                                                          null &&
+                                                                      _nearYouMatchModel!
+                                                                              .data![index]
+                                                                              .gender ==
+                                                                          "Male")
+                                                                  ? Image.asset(
+                                                                      ImagePath
+                                                                          .profile,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                      height:
+                                                                          207,
+                                                                      width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width,
+                                                                    )
+                                                                  : Image.asset(
+                                                                      ImagePath
+                                                                          .femaleProfileUser,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                      height:
+                                                                          207,
+                                                                      width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width,
+                                                                    ),
+                                                        ),
+                                                        // Spacer(),
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .bottomCenter,
+                                                          child: Container(
+                                                            height: 75,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Color(
+                                                                      0xffffffff)
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .only(
+                                                                bottomRight:
+                                                                    Radius
+                                                                        .circular(
+                                                                            13),
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                        13),
+                                                              ),
+                                                            ),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 8,
+                                                                      right: 0,
+                                                                      top: 5),
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      (_nearYouMatchModel != null &&
+                                                                              _nearYouMatchModel!.data != null &&
+                                                                              _nearYouMatchModel!.data![index].isAgent == "0")
+                                                                          ? Image.asset(
+                                                                              ImagePath.dualprofile,
                                                                               color: currentColor,
-                                                                              borderRadius: BorderRadius.circular(9)),
-                                                                          alignment:
-                                                                              Alignment.center,
-                                                                          child:
-                                                                              Text(
-                                                                            'Message',
-                                                                            style:
-                                                                                appBtnStyle.copyWith(fontSize: 12, color: Colors.white),
-                                                                          ),
+                                                                              height: 16,
+                                                                              width: 16,
+                                                                            )
+                                                                          : Container(),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            5,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child:
+                                                                            Text(
+                                                                          _nearYouMatchModel != null && _nearYouMatchModel!.data != null
+                                                                              ? _nearYouMatchModel!.data![index].firstname.toString() + ', ' + _nearYouMatchModel!.data![index].age.toString()
+                                                                              : AppConstants.joseph,
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                          maxLines:
+                                                                              1,
+                                                                          style: fontStyle.copyWith(
+                                                                              color: Colors.black,
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.w600),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 0,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            18.0),
+                                                                    child: Text(
+                                                                      _nearYouMatchModel != null &&
+                                                                              _nearYouMatchModel!.data !=
+                                                                                  null
+                                                                          ? _nearYouMatchModel!.data![index].gender.toString() +
+                                                                              ' | ' +
+                                                                              _nearYouMatchModel!.data![index].height.toString()
+                                                                          : AppConstants.castText,
+                                                                      style: matchscroll.copyWith(
+                                                                          fontSize:
+                                                                              12,
+                                                                          fontWeight: FontWeight
+                                                                              .w500,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left: 0,
+                                                                        right:
+                                                                            8,
+                                                                        bottom:
+                                                                            5),
+                                                                    child:
+                                                                        GestureDetector(
+                                                                      onTap:
+                                                                          () async {
+                                                                        /// ----------- firebase chat module start -----------
+
+                                                                        Uuid
+                                                                            uuid =
+                                                                            Uuid();
+                                                                        String
+                                                                            chatId =
+                                                                            "";
+                                                                        String
+                                                                            uuId =
+                                                                            uuid.v4();
+                                                                        SharedPreferences
+                                                                            prefs =
+                                                                            await SharedPreferences.getInstance();
+                                                                        String
+                                                                            userId =
+                                                                            await prefs.getString(USER_ID)!;
+                                                                        String
+                                                                            userName =
+                                                                            await prefs.getString(FULLNAME)!;
+                                                                        String
+                                                                            userProfile =
+                                                                            await prefs.getString(PROFILEIMAGE)!;
+                                                                        FirebaseFirestore
+                                                                            firestore =
+                                                                            FirebaseFirestore.instance;
+                                                                        bool?
+                                                                            alreadyChat =
+                                                                            false;
+                                                                        List
+                                                                            chatData =
+                                                                            [];
+                                                                        await firestore
+                                                                            .collection(
+                                                                                "Users")
+                                                                            .where("userId",
+                                                                                isEqualTo: userId)
+                                                                            .get()
+                                                                            .then((value) async {
+                                                                          value
+                                                                              .docs
+                                                                              .forEach((element) async {
+                                                                            if (element.data()["chats"] !=
+                                                                                null) {
+                                                                              setState(() {
+                                                                                chatData = element.data()["chats"];
+                                                                              });
+                                                                              element.data()["chats"].forEach((value) {
+                                                                                log("user id :: ${value["userId"].toString()}");
+                                                                                log("user id :: ${_nearYouMatchModel!.data![index].userId.toString()}");
+                                                                                log("user id :: ${value["userId"].toString() == _nearYouMatchModel!.data![index].userId.toString()}");
+                                                                                if (value["userId"].toString() == _nearYouMatchModel!.data![index].userId.toString()) {
+                                                                                  setState(() {
+                                                                                    alreadyChat = true;
+                                                                                    chatId = value["chatId"].toString();
+                                                                                  });
+                                                                                }
+                                                                              });
+                                                                            } else {
+                                                                              setState(() {
+                                                                                alreadyChat = false;
+                                                                              });
+                                                                            }
+                                                                          });
+                                                                        }).whenComplete(() async {
+                                                                          if (alreadyChat! ==
+                                                                              false) {
+                                                                            setState(() {
+                                                                              chatData.add({
+                                                                                "chatId": uuId,
+                                                                                "userId": _nearYouMatchModel!.data![index].userId.toString(),
+                                                                                "userName": _nearYouMatchModel!.data![index].firstname.toString(),
+                                                                                "userProfile": _nearYouMatchModel!.data![index].profileImage![0].filePath.toString(),
+                                                                              });
+                                                                            });
+                                                                            await firestore.collection("Users").doc(userId).set({
+                                                                              "chats": chatData,
+                                                                            }, SetOptions(merge: true));
+                                                                            List
+                                                                                chats =
+                                                                                [];
+                                                                            firestore.collection("Users").doc(_nearYouMatchModel!.data![index].userId.toString()).get().then((value) {
+                                                                              setState(() {
+                                                                                chats = value.data()!["chats"];
+                                                                              });
+                                                                            });
+
+                                                                            setState(() {
+                                                                              chats.add({
+                                                                                "chatId": uuId,
+                                                                                "userId": userId,
+                                                                                "userName": userName,
+                                                                                "userProfile": userProfile,
+                                                                              });
+                                                                            });
+                                                                            await firestore.collection("Users").doc(_nearYouMatchModel!.data![index].userId.toString()).set({
+                                                                              "chats": chats,
+                                                                            }, SetOptions(merge: true));
+                                                                            log("uuid new");
+                                                                            Navigator.push(
+                                                                                context,
+                                                                                CupertinoPageRoute(
+                                                                                    builder: (context) => Chat_screen(
+                                                                                          chatId: uuId,
+                                                                                          image: (_nearYouMatchModel != null && _nearYouMatchModel!.data!.isNotEmpty && _nearYouMatchModel!.data![index].profileImage!.isNotEmpty) ? _nearYouMatchModel!.data![index].profileImage![0].filePath.toString() : "",
+                                                                                          name: _nearYouMatchModel!.data![index].firstname.toString() + ' ' + _nearYouMatchModel!.data![index].lastname.toString(),
+                                                                                        )));
+                                                                          } else {
+                                                                            log("uuid old");
+
+                                                                            Navigator.push(
+                                                                                context,
+                                                                                CupertinoPageRoute(
+                                                                                    builder: (context) => Chat_screen(
+                                                                                          chatId: chatId,
+                                                                                          image: (_nearYouMatchModel != null && _nearYouMatchModel!.data!.isNotEmpty && _nearYouMatchModel!.data![index].profileImage!.isNotEmpty) ? _nearYouMatchModel!.data![index].profileImage![0].filePath.toString() : "",
+                                                                                          name: _nearYouMatchModel!.data![index].firstname.toString() + ' ' + _nearYouMatchModel!.data![index].lastname.toString(),
+                                                                                        )));
+                                                                          }
+                                                                        });
+
+                                                                        /// ----------- firebase chat module end -----------
+                                                                        /*  Navigator.push(
+                                                                            context,
+                                                                            CupertinoPageRoute(
+                                                                                builder: (context) => Chat_screen(
+                                                                                      image: (_nearYouMatchModel != null && _nearYouMatchModel!.data!.isNotEmpty && _nearYouMatchModel!.data![index].profileImage!.isNotEmpty) ? _nearYouMatchModel!.data![index].profileImage![0].filePath.toString() : "",
+                                                                                      name: _nearYouMatchModel!.data![index].firstname.toString() + ' ' + _nearYouMatchModel!.data![index].lastname.toString(),
+                                                                                    ))); */
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width,
+                                                                        height:
+                                                                            25,
+                                                                        decoration: BoxDecoration(
+                                                                            color:
+                                                                                currentColor,
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(9)),
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        child:
+                                                                            Text(
+                                                                          'Message',
+                                                                          style: appBtnStyle.copyWith(
+                                                                              fontSize: 12,
+                                                                              color: Colors.white),
                                                                         ),
                                                                       ),
                                                                     ),
-                                                                  ],
-                                                                ),
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ),
                                                           ),
-                                                        ],
-                                                      ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
@@ -766,7 +981,7 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                             EdgeInsets.all(0),
                                                         child: Container(
                                                           height: 210,
-                                                          decoration: (_getRecentlyVisitModel != null &&
+                                                          /* decoration: (_getRecentlyVisitModel != null &&
                                                                   _getRecentlyVisitModel!
                                                                           .data !=
                                                                       null &&
@@ -809,119 +1024,277 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                                               .femaleProfileUser),
                                                                       fit: BoxFit
                                                                           .cover),
-                                                                ),
-                                                          child: Column(
+                                                                ), */
+                                                          child: Stack(
                                                             children: [
-                                                              Spacer(),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        bottom:
-                                                                            0),
-                                                                child:
-                                                                    Container(
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: Color(
-                                                                            0xffffffff)
-                                                                        .withOpacity(
-                                                                            0.5),
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .only(
-                                                                      bottomRight:
-                                                                          Radius.circular(
-                                                                              13),
-                                                                      bottomLeft:
-                                                                          Radius.circular(
-                                                                              13),
-                                                                    ),
-                                                                  ),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left: 8,
-                                                                        right:
-                                                                            14,
-                                                                        top: 5),
-                                                                    child:
-                                                                        Column(
-                                                                      children: [
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.start,
-                                                                          children: [
-                                                                            Image.asset(
-                                                                              ImagePath.dualprofile,
-                                                                              color: currentColor,
-                                                                              height: 16,
-                                                                              width: 16,
-                                                                            ),
-                                                                            SizedBox(
-                                                                              width: 5,
-                                                                            ),
-                                                                            Expanded(
-                                                                              child: Text(
-                                                                                _getRecentlyVisitModel != null && _getRecentlyVisitModel!.data != null ? _getRecentlyVisitModel!.data![index].firstname.toString() + ', ' + _getRecentlyVisitModel!.data![index].age.toString() : AppConstants.joseph,
-                                                                                maxLines: 1,
-                                                                                overflow: TextOverflow.ellipsis,
-                                                                                style: fontStyle.copyWith(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w600),
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        SizedBox(
-                                                                          width:
-                                                                              5,
-                                                                        ),
-                                                                        Text(
-                                                                          _getRecentlyVisitModel != null && _getRecentlyVisitModel!.data != null
-                                                                              ? _getRecentlyVisitModel!.data![index].gender.toString() + '| ' + _getRecentlyVisitModel!.data![index].height.toString()
-                                                                              : AppConstants.castText,
-                                                                          style: matchscroll.copyWith(
-                                                                              fontSize: 12,
-                                                                              fontWeight: FontWeight.w500,
-                                                                              color: Colors.black),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              5,
-                                                                        ),
-                                                                        Padding(
-                                                                          padding: const EdgeInsets.only(
-                                                                              left: 5,
-                                                                              right: 0,
-                                                                              bottom: 5),
-                                                                          child:
-                                                                              GestureDetector(
-                                                                            onTap:
-                                                                                () {
-                                                                              Navigator.push(
-                                                                                context,
-                                                                                CupertinoPageRoute(
-                                                                                  builder: (context) => Chat_screen(
-                                                                                    image: (_getRecentlyVisitModel != null && _getRecentlyVisitModel!.data!.isNotEmpty && _getRecentlyVisitModel!.data![index].profileImage!.isNotEmpty) ? _getRecentlyVisitModel!.data![index].profileImage![0].filePath.toString() : "",
-                                                                                    name: _getRecentlyVisitModel!.data![index].firstname.toString() + ' ' + _getRecentlyVisitModel!.data![index].lastname.toString(),
-                                                                                  ),
-                                                                                ),
-                                                                              );
-                                                                            },
+                                                              ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            13.0),
+                                                                child: _getRecentlyVisitModel != null &&
+                                                                        _getRecentlyVisitModel!.data !=
+                                                                            null &&
+                                                                        _getRecentlyVisitModel!
+                                                                            .data![
+                                                                                index]
+                                                                            .profileImage!
+                                                                            .isNotEmpty
+                                                                    ? (_getRecentlyVisitModel!.data![index].blurImage ==
+                                                                            1)
+                                                                        ? ImageFiltered(
+                                                                            imageFilter:
+                                                                                ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                                                             child:
-                                                                                Container(
+                                                                                CachedNetworkImage(
+                                                                              imageUrl: _getRecentlyVisitModel!.data![index].profileImage![0].filePath.toString(),
+                                                                              fit: BoxFit.cover,
+                                                                              height: 235,
                                                                               width: MediaQuery.of(context).size.width,
-                                                                              height: 25,
-                                                                              decoration: BoxDecoration(color: currentColor, borderRadius: BorderRadius.circular(9)),
-                                                                              alignment: Alignment.center,
-                                                                              child: Text(
-                                                                                'Message',
-                                                                                style: appBtnStyle.copyWith(fontSize: 12, color: Colors.white),
+                                                                            ),
+                                                                          )
+                                                                        : CachedNetworkImage(
+                                                                            imageUrl:
+                                                                                _getRecentlyVisitModel!.data![index].profileImage![0].filePath.toString(),
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                            height:
+                                                                                235,
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width,
+                                                                          )
+                                                                    : (_getRecentlyVisitModel != null &&
+                                                                            _getRecentlyVisitModel!.data !=
+                                                                                null &&
+                                                                            _getRecentlyVisitModel!.data![index].gender ==
+                                                                                "Male")
+                                                                        ? Image
+                                                                            .asset(
+                                                                            ImagePath.profile,
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                            height:
+                                                                                207,
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width,
+                                                                          )
+                                                                        : Image
+                                                                            .asset(
+                                                                            ImagePath.femaleProfileUser,
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                            height:
+                                                                                207,
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width,
+                                                                          ),
+                                                              ),
+
+                                                              // Spacer(),
+                                                              Align(
+                                                                alignment: Alignment
+                                                                    .bottomCenter,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          0),
+                                                                  child:
+                                                                      Container(
+                                                                    height: 75,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Color(
+                                                                              0xffffffff)
+                                                                          .withOpacity(
+                                                                              0.5),
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .only(
+                                                                        bottomRight:
+                                                                            Radius.circular(13),
+                                                                        bottomLeft:
+                                                                            Radius.circular(13),
+                                                                      ),
+                                                                    ),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              8,
+                                                                          right:
+                                                                              14,
+                                                                          top:
+                                                                              5),
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.start,
+                                                                            children: [
+                                                                              (_getRecentlyVisitModel != null && _getRecentlyVisitModel!.data != null && _getRecentlyVisitModel!.data![index].isAgent == "0")
+                                                                                  ? Image.asset(
+                                                                                      ImagePath.dualprofile,
+                                                                                      color: currentColor,
+                                                                                      height: 16,
+                                                                                      width: 16,
+                                                                                    )
+                                                                                  : Container(),
+                                                                              SizedBox(
+                                                                                width: 5,
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Text(
+                                                                                  _getRecentlyVisitModel != null && _getRecentlyVisitModel!.data != null ? _getRecentlyVisitModel!.data![index].firstname.toString() + ', ' + _getRecentlyVisitModel!.data![index].age.toString() : AppConstants.joseph,
+                                                                                  maxLines: 1,
+                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                  style: fontStyle.copyWith(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w600),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          SizedBox(
+                                                                            width:
+                                                                                5,
+                                                                          ),
+                                                                          Text(
+                                                                            _getRecentlyVisitModel != null && _getRecentlyVisitModel!.data != null
+                                                                                ? _getRecentlyVisitModel!.data![index].gender.toString() + '| ' + _getRecentlyVisitModel!.data![index].height.toString()
+                                                                                : AppConstants.castText,
+                                                                            style: matchscroll.copyWith(
+                                                                                fontSize: 12,
+                                                                                fontWeight: FontWeight.w500,
+                                                                                color: Colors.black),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          Padding(
+                                                                            padding: const EdgeInsets.only(
+                                                                                left: 5,
+                                                                                right: 0,
+                                                                                bottom: 5),
+                                                                            child:
+                                                                                GestureDetector(
+                                                                              onTap: () async {
+                                                                                /// ----------- firebase chat module start -----------
+
+                                                                                Uuid uuid = Uuid();
+                                                                                String chatId = "";
+                                                                                String uuId = uuid.v4();
+                                                                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                                                String userId = await prefs.getString(USER_ID)!;
+                                                                                String userName = await prefs.getString(FULLNAME)!;
+                                                                                String userProfile = await prefs.getString(PROFILEIMAGE)!;
+                                                                                FirebaseFirestore firestore = FirebaseFirestore.instance;
+                                                                                bool? alreadyChat = false;
+                                                                                List chatData = [];
+                                                                                await firestore.collection("Users").where("userId", isEqualTo: userId).get().then((value) async {
+                                                                                  value.docs.forEach((element) async {
+                                                                                    if (element.data()["chats"] != null) {
+                                                                                      setState(() {
+                                                                                        chatData = element.data()["chats"];
+                                                                                      });
+                                                                                      element.data()["chats"].forEach((value) {
+                                                                                        log("user id :: ${value["userId"].toString()}");
+                                                                                        log("user id :: ${_getRecentlyVisitModel!.data![index].userId.toString()}");
+                                                                                        log("user id :: ${value["userId"].toString() == _getRecentlyVisitModel!.data![index].userId.toString()}");
+                                                                                        if (value["userId"].toString() == _getRecentlyVisitModel!.data![index].userId.toString()) {
+                                                                                          setState(() {
+                                                                                            alreadyChat = true;
+                                                                                            chatId = value["chatId"].toString();
+                                                                                          });
+                                                                                        }
+                                                                                      });
+                                                                                    } else {
+                                                                                      setState(() {
+                                                                                        alreadyChat = false;
+                                                                                      });
+                                                                                    }
+                                                                                  });
+                                                                                }).whenComplete(() async {
+                                                                                  if (alreadyChat! == false) {
+                                                                                    setState(() {
+                                                                                      chatData.add({
+                                                                                        "chatId": uuId,
+                                                                                        "userId": _getRecentlyVisitModel!.data![index].userId.toString(),
+                                                                                        "userName": _getRecentlyVisitModel!.data![index].firstname.toString(),
+                                                                                        "userProfile": _getRecentlyVisitModel!.data![index].profileImage![0].filePath.toString(),
+                                                                                      });
+                                                                                    });
+                                                                                    await firestore.collection("Users").doc(userId).set({
+                                                                                      "chats": chatData,
+                                                                                    }, SetOptions(merge: true));
+                                                                                    List chats = [];
+                                                                                    firestore.collection("Users").doc(_getRecentlyVisitModel!.data![index].userId.toString()).get().then((value) {
+                                                                                      setState(() {
+                                                                                        chats = value.data()!["chats"];
+                                                                                      });
+                                                                                    });
+
+                                                                                    setState(() {
+                                                                                      chats.add({
+                                                                                        "chatId": uuId,
+                                                                                        "userId": userId,
+                                                                                        "userName": userName,
+                                                                                        "userProfile": userProfile,
+                                                                                      });
+                                                                                    });
+                                                                                    await firestore.collection("Users").doc(_getRecentlyVisitModel!.data![index].userId.toString()).set({
+                                                                                      "chats": chats,
+                                                                                    }, SetOptions(merge: true));
+                                                                                    log("uuid new");
+                                                                                    Navigator.push(
+                                                                                        context,
+                                                                                        CupertinoPageRoute(
+                                                                                            builder: (context) => Chat_screen(
+                                                                                                  chatId: uuId,
+                                                                                                  image: (_getRecentlyVisitModel != null && _getRecentlyVisitModel!.data!.isNotEmpty && _getRecentlyVisitModel!.data![index].profileImage!.isNotEmpty) ? _getRecentlyVisitModel!.data![index].profileImage![0].filePath.toString() : "",
+                                                                                                  name: _getRecentlyVisitModel!.data![index].firstname.toString() + ' ' + _getRecentlyVisitModel!.data![index].lastname.toString(),
+                                                                                                )));
+                                                                                  } else {
+                                                                                    log("uuid old");
+
+                                                                                    Navigator.push(
+                                                                                        context,
+                                                                                        CupertinoPageRoute(
+                                                                                            builder: (context) => Chat_screen(
+                                                                                                  chatId: chatId,
+                                                                                                  image: (_getRecentlyVisitModel != null && _getRecentlyVisitModel!.data!.isNotEmpty && _getRecentlyVisitModel!.data![index].profileImage!.isNotEmpty) ? _getRecentlyVisitModel!.data![index].profileImage![0].filePath.toString() : "",
+                                                                                                  name: _getRecentlyVisitModel!.data![index].firstname.toString() + ' ' + _getRecentlyVisitModel!.data![index].lastname.toString(),
+                                                                                                )));
+                                                                                  }
+                                                                                });
+
+                                                                                /// ----------- firebase chat module end -----------
+
+                                                                                /*  Navigator.push(
+                                                                                  context,
+                                                                                  CupertinoPageRoute(
+                                                                                    builder: (context) => Chat_screen(
+                                                                                      image: (_getRecentlyVisitModel != null && _getRecentlyVisitModel!.data!.isNotEmpty && _getRecentlyVisitModel!.data![index].profileImage!.isNotEmpty) ? _getRecentlyVisitModel!.data![index].profileImage![0].filePath.toString() : "",
+                                                                                      name: _getRecentlyVisitModel!.data![index].firstname.toString() + ' ' + _getRecentlyVisitModel!.data![index].lastname.toString(),
+                                                                                    ),
+                                                                                  ),
+                                                                                ); */
+                                                                              },
+                                                                              child: Container(
+                                                                                width: MediaQuery.of(context).size.width,
+                                                                                height: 25,
+                                                                                decoration: BoxDecoration(color: currentColor, borderRadius: BorderRadius.circular(9)),
+                                                                                alignment: Alignment.center,
+                                                                                child: Text(
+                                                                                  'Message',
+                                                                                  style: appBtnStyle.copyWith(fontSize: 12, color: Colors.white),
+                                                                                ),
                                                                               ),
                                                                             ),
                                                                           ),
-                                                                        ),
-                                                                      ],
+                                                                        ],
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ),
@@ -1002,7 +1375,7 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                                     0),
                                                             child: Container(
                                                               height: 210,
-                                                              decoration: (_todayMatchDetailModel != null &&
+                                                              /* decoration: (_todayMatchDetailModel != null &&
                                                                       _todayMatchDetailModel!
                                                                               .data !=
                                                                           null &&
@@ -1032,17 +1405,57 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                                               ? AssetImage(ImagePath.profile)
                                                                               : AssetImage(ImagePath.femaleProfileUser),
                                                                           fit: BoxFit.cover),
-                                                                    ),
-                                                              child: Column(
+                                                                    ), */
+                                                              child: Stack(
                                                                 children: [
-                                                                  Spacer(),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        bottom:
-                                                                            0),
+                                                                  ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            13.0),
+                                                                    child: _todayMatchDetailModel != null &&
+                                                                            _todayMatchDetailModel!.data !=
+                                                                                null &&
+                                                                            _todayMatchDetailModel!.data![index].profileImage!.isNotEmpty
+                                                                        ? (_todayMatchDetailModel!.data![index].blurImage == 1)
+                                                                            ? ImageFiltered(
+                                                                                imageFilter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                                                                child: CachedNetworkImage(
+                                                                                  imageUrl: _todayMatchDetailModel!.data![index].profileImage![0].filePath.toString(),
+                                                                                  fit: BoxFit.cover,
+                                                                                  height: 235,
+                                                                                  width: MediaQuery.of(context).size.width,
+                                                                                ),
+                                                                              )
+                                                                            : CachedNetworkImage(
+                                                                                imageUrl: _todayMatchDetailModel!.data![index].profileImage![0].filePath.toString(),
+                                                                                fit: BoxFit.cover,
+                                                                                height: 235,
+                                                                                width: MediaQuery.of(context).size.width,
+                                                                              )
+                                                                        : (_todayMatchDetailModel != null && _todayMatchDetailModel!.data != null && _todayMatchDetailModel!.data![index].gender == "Male")
+                                                                            ? Image.asset(
+                                                                                ImagePath.profile,
+                                                                                fit: BoxFit.cover,
+                                                                                height: 207,
+                                                                                width: MediaQuery.of(context).size.width,
+                                                                              )
+                                                                            : Image.asset(
+                                                                                ImagePath.femaleProfileUser,
+                                                                                fit: BoxFit.cover,
+                                                                                height: 207,
+                                                                                width: MediaQuery.of(context).size.width,
+                                                                              ),
+                                                                  ),
+
+                                                                  // Spacer(),
+                                                                  Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .bottomCenter,
                                                                     child:
                                                                         Container(
+                                                                      height:
+                                                                          75,
                                                                       decoration:
                                                                           BoxDecoration(
                                                                         color: Color(0xffffffff)
@@ -1074,12 +1487,14 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                                             Row(
                                                                               mainAxisAlignment: MainAxisAlignment.start,
                                                                               children: [
-                                                                                Image.asset(
-                                                                                  ImagePath.dualprofile,
-                                                                                  color: currentColor,
-                                                                                  height: 16,
-                                                                                  width: 16,
-                                                                                ),
+                                                                                (_todayMatchDetailModel != null && _todayMatchDetailModel!.data != null && _todayMatchDetailModel!.data![index].isAgent == "0")
+                                                                                    ? Image.asset(
+                                                                                        ImagePath.dualprofile,
+                                                                                        color: currentColor,
+                                                                                        height: 16,
+                                                                                        width: 16,
+                                                                                      )
+                                                                                    : Container(),
                                                                                 SizedBox(
                                                                                   width: 5,
                                                                                 ),
@@ -1106,14 +1521,104 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                                             Padding(
                                                                               padding: const EdgeInsets.only(left: 5, right: 0, bottom: 5),
                                                                               child: GestureDetector(
-                                                                                onTap: () {
-                                                                                  Navigator.push(
+                                                                                onTap: () async {
+                                                                                  /// ----------- firebase chat module start -----------
+
+                                                                                  Uuid uuid = Uuid();
+                                                                                  String chatId = "";
+                                                                                  String uuId = uuid.v4();
+                                                                                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                                                  String userId = await prefs.getString(USER_ID)!;
+                                                                                  String userName = await prefs.getString(FULLNAME)!;
+                                                                                  String userProfile = await prefs.getString(PROFILEIMAGE)!;
+                                                                                  FirebaseFirestore firestore = FirebaseFirestore.instance;
+                                                                                  bool? alreadyChat = false;
+                                                                                  List chatData = [];
+                                                                                  await firestore.collection("Users").where("userId", isEqualTo: userId).get().then((value) async {
+                                                                                    value.docs.forEach((element) async {
+                                                                                      if (element.data()["chats"] != null) {
+                                                                                        setState(() {
+                                                                                          chatData = element.data()["chats"];
+                                                                                        });
+                                                                                        element.data()["chats"].forEach((value) {
+                                                                                          log("user id :: ${value["userId"].toString()}");
+                                                                                          log("user id :: ${_todayMatchDetailModel!.data![index].userId.toString()}");
+                                                                                          log("user id :: ${value["userId"].toString() == _todayMatchDetailModel!.data![index].userId.toString()}");
+                                                                                          if (value["userId"].toString() == _todayMatchDetailModel!.data![index].userId.toString()) {
+                                                                                            setState(() {
+                                                                                              alreadyChat = true;
+                                                                                              chatId = value["chatId"].toString();
+                                                                                            });
+                                                                                          }
+                                                                                        });
+                                                                                      } else {
+                                                                                        setState(() {
+                                                                                          alreadyChat = false;
+                                                                                        });
+                                                                                      }
+                                                                                    });
+                                                                                  }).whenComplete(() async {
+                                                                                    if (alreadyChat! == false) {
+                                                                                      setState(() {
+                                                                                        chatData.add({
+                                                                                          "chatId": uuId,
+                                                                                          "userId": _todayMatchDetailModel!.data![index].userId.toString(),
+                                                                                          "userName": _todayMatchDetailModel!.data![index].firstname.toString(),
+                                                                                          "userProfile": _todayMatchDetailModel!.data![index].profileImage![0].filePath.toString(),
+                                                                                        });
+                                                                                      });
+                                                                                      await firestore.collection("Users").doc(userId).set({
+                                                                                        "chats": chatData,
+                                                                                      }, SetOptions(merge: true));
+                                                                                      List chats = [];
+                                                                                      firestore.collection("Users").doc(_todayMatchDetailModel!.data![index].userId.toString()).get().then((value) {
+                                                                                        setState(() {
+                                                                                          chats = value.data()!["chats"];
+                                                                                        });
+                                                                                      });
+
+                                                                                      setState(() {
+                                                                                        chats.add({
+                                                                                          "chatId": uuId,
+                                                                                          "userId": userId,
+                                                                                          "userName": userName,
+                                                                                          "userProfile": userProfile,
+                                                                                        });
+                                                                                      });
+                                                                                      await firestore.collection("Users").doc(_todayMatchDetailModel!.data![index].userId.toString()).set({
+                                                                                        "chats": chats,
+                                                                                      }, SetOptions(merge: true));
+                                                                                      log("uuid new");
+                                                                                      Navigator.push(
+                                                                                          context,
+                                                                                          CupertinoPageRoute(
+                                                                                              builder: (context) => Chat_screen(
+                                                                                                    chatId: uuId,
+                                                                                                    image: (_todayMatchDetailModel != null && _getRecentlyVisitModel!.data!.isNotEmpty && _getRecentlyVisitModel!.data![index].profileImage!.isNotEmpty) ? _getRecentlyVisitModel!.data![index].profileImage![0].filePath.toString() : "",
+                                                                                                    name: _todayMatchDetailModel!.data![index].firstname.toString() + ' ' + _getRecentlyVisitModel!.data![index].lastname.toString(),
+                                                                                                  )));
+                                                                                    } else {
+                                                                                      log("uuid old");
+
+                                                                                      Navigator.push(
+                                                                                          context,
+                                                                                          CupertinoPageRoute(
+                                                                                              builder: (context) => Chat_screen(
+                                                                                                    chatId: chatId,
+                                                                                                    image: (_todayMatchDetailModel != null && _getRecentlyVisitModel!.data!.isNotEmpty && _getRecentlyVisitModel!.data![index].profileImage!.isNotEmpty) ? _getRecentlyVisitModel!.data![index].profileImage![0].filePath.toString() : "",
+                                                                                                    name: _todayMatchDetailModel!.data![index].firstname.toString() + ' ' + _getRecentlyVisitModel!.data![index].lastname.toString(),
+                                                                                                  )));
+                                                                                    }
+                                                                                  });
+
+                                                                                  /// ----------- firebase chat module end -----------
+                                                                                  /*  Navigator.push(
                                                                                       context,
                                                                                       CupertinoPageRoute(
                                                                                           builder: (context) => Chat_screen(
                                                                                                 image: (_todayMatchDetailModel != null && _todayMatchDetailModel!.data!.isNotEmpty && _todayMatchDetailModel!.data![index].profileImage!.isNotEmpty) ? _todayMatchDetailModel!.data![index].profileImage![0].filePath.toString() : "",
                                                                                                 name: _todayMatchDetailModel!.data![index].firstname.toString() + ' ' + _todayMatchDetailModel!.data![index].lastname.toString(),
-                                                                                              )));
+                                                                                              ))); */
                                                                                 },
                                                                                 child: Container(
                                                                                   width: MediaQuery.of(context).size.width,
@@ -1232,7 +1737,7 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                     padding: EdgeInsets.all(4),
                                                     child: Container(
                                                       height: 210,
-                                                      decoration: (_getReferbyAgentModel != null &&
+                                                      /* decoration: (_getReferbyAgentModel != null &&
                                                               _getReferbyAgentModel!
                                                                       .data !=
                                                                   null &&
@@ -1277,16 +1782,100 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                                               .femaleProfileUser),
                                                                   fit: BoxFit
                                                                       .cover),
-                                                            ),
-                                                      child: Column(
+                                                            ), */
+                                                      child: Stack(
                                                         children: [
-                                                          Spacer(),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    bottom: 0),
+                                                          ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        13.0),
+                                                            child: _getReferbyAgentModel != null &&
+                                                                    _getReferbyAgentModel!
+                                                                            .data !=
+                                                                        null &&
+                                                                    _getReferbyAgentModel!
+                                                                        .data![
+                                                                            index]
+                                                                        .profileImage!
+                                                                        .isNotEmpty
+                                                                ? (_getReferbyAgentModel!
+                                                                            .data![
+                                                                                index]
+                                                                            .blurImage ==
+                                                                        1)
+                                                                    ? ImageFiltered(
+                                                                        imageFilter: ImageFilter.blur(
+                                                                            sigmaX:
+                                                                                5,
+                                                                            sigmaY:
+                                                                                5),
+                                                                        child:
+                                                                            CachedNetworkImage(
+                                                                          imageUrl: _getReferbyAgentModel!
+                                                                              .data![index]
+                                                                              .profileImage![0]
+                                                                              .filePath
+                                                                              .toString(),
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                          height:
+                                                                              235,
+                                                                          width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width,
+                                                                        ),
+                                                                      )
+                                                                    : CachedNetworkImage(
+                                                                        imageUrl: _getReferbyAgentModel!
+                                                                            .data![index]
+                                                                            .profileImage![0]
+                                                                            .filePath
+                                                                            .toString(),
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                        height:
+                                                                            235,
+                                                                        width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width,
+                                                                      )
+                                                                : (_getReferbyAgentModel != null &&
+                                                                        _getReferbyAgentModel!.data !=
+                                                                            null &&
+                                                                        _getReferbyAgentModel!.data![index].gender ==
+                                                                            "Male")
+                                                                    ? Image
+                                                                        .asset(
+                                                                        ImagePath
+                                                                            .profile,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                        height:
+                                                                            207,
+                                                                        width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width,
+                                                                      )
+                                                                    : Image
+                                                                        .asset(
+                                                                        ImagePath
+                                                                            .femaleProfileUser,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                        height:
+                                                                            207,
+                                                                        width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width,
+                                                                      ),
+                                                          ),
+                                                          // Spacer(),
+                                                          Align(
+                                                            alignment: Alignment
+                                                                .bottomCenter,
                                                             child: Container(
+                                                              height: 75,
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Color(
@@ -1322,17 +1911,16 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                                           MainAxisAlignment
                                                                               .start,
                                                                       children: [
-                                                                        Image
-                                                                            .asset(
-                                                                          ImagePath
-                                                                              .dualprofile,
-                                                                          color:
-                                                                              currentColor,
-                                                                          height:
-                                                                              16,
-                                                                          width:
-                                                                              16,
-                                                                        ),
+                                                                        (_getReferbyAgentModel != null &&
+                                                                                _getReferbyAgentModel!.data != null &&
+                                                                                _getReferbyAgentModel!.data![index].isAgent == "0")
+                                                                            ? Image.asset(
+                                                                                ImagePath.dualprofile,
+                                                                                color: currentColor,
+                                                                                height: 16,
+                                                                                width: 16,
+                                                                              )
+                                                                            : Container(),
                                                                         SizedBox(
                                                                           width:
                                                                               5,
@@ -1399,14 +1987,129 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                                       child:
                                                                           GestureDetector(
                                                                         onTap:
-                                                                            () {
-                                                                          Navigator
+                                                                            () async {
+                                                                          /// ----------- firebase chat module start -----------
+
+                                                                          Uuid
+                                                                              uuid =
+                                                                              Uuid();
+                                                                          String
+                                                                              chatId =
+                                                                              "";
+                                                                          String
+                                                                              uuId =
+                                                                              uuid.v4();
+                                                                          SharedPreferences
+                                                                              prefs =
+                                                                              await SharedPreferences.getInstance();
+                                                                          String
+                                                                              userId =
+                                                                              await prefs.getString(USER_ID)!;
+                                                                          String
+                                                                              userName =
+                                                                              await prefs.getString(FULLNAME)!;
+                                                                          String
+                                                                              userProfile =
+                                                                              await prefs.getString(PROFILEIMAGE)!;
+                                                                          FirebaseFirestore
+                                                                              firestore =
+                                                                              FirebaseFirestore.instance;
+                                                                          bool?
+                                                                              alreadyChat =
+                                                                              false;
+                                                                          List
+                                                                              chatData =
+                                                                              [];
+                                                                          await firestore
+                                                                              .collection("Users")
+                                                                              .where("userId", isEqualTo: userId)
+                                                                              .get()
+                                                                              .then((value) async {
+                                                                            value.docs.forEach((element) async {
+                                                                              if (element.data()["chats"] != null) {
+                                                                                setState(() {
+                                                                                  chatData = element.data()["chats"];
+                                                                                });
+                                                                                element.data()["chats"].forEach((value) {
+                                                                                  log("user id :: ${value["userId"].toString()}");
+                                                                                  log("user id :: ${_getReferbyAgentModel!.data![index].userId.toString()}");
+                                                                                  log("user id :: ${value["userId"].toString() == _getReferbyAgentModel!.data![index].userId.toString()}");
+                                                                                  if (value["userId"].toString() == _getReferbyAgentModel!.data![index].userId.toString()) {
+                                                                                    setState(() {
+                                                                                      alreadyChat = true;
+                                                                                      chatId = value["chatId"].toString();
+                                                                                    });
+                                                                                  }
+                                                                                });
+                                                                              } else {
+                                                                                setState(() {
+                                                                                  alreadyChat = false;
+                                                                                });
+                                                                              }
+                                                                            });
+                                                                          }).whenComplete(() async {
+                                                                            if (alreadyChat! ==
+                                                                                false) {
+                                                                              setState(() {
+                                                                                chatData.add({
+                                                                                  "chatId": uuId,
+                                                                                  "userId": _getReferbyAgentModel!.data![index].userId.toString(),
+                                                                                  "userName": _getReferbyAgentModel!.data![index].firstname.toString(),
+                                                                                  "userProfile": _getReferbyAgentModel!.data![index].profileImage![0].filePath.toString(),
+                                                                                });
+                                                                              });
+                                                                              await firestore.collection("Users").doc(userId).set({
+                                                                                "chats": chatData,
+                                                                              }, SetOptions(merge: true));
+                                                                              List chats = [];
+                                                                              firestore.collection("Users").doc(_getReferbyAgentModel!.data![index].userId.toString()).get().then((value) {
+                                                                                setState(() {
+                                                                                  chats = value.data()!["chats"];
+                                                                                });
+                                                                              });
+
+                                                                              setState(() {
+                                                                                chats.add({
+                                                                                  "chatId": uuId,
+                                                                                  "userId": userId,
+                                                                                  "userName": userName,
+                                                                                  "userProfile": userProfile,
+                                                                                });
+                                                                              });
+                                                                              await firestore.collection("Users").doc(_getReferbyAgentModel!.data![index].userId.toString()).set({
+                                                                                "chats": chats,
+                                                                              }, SetOptions(merge: true));
+                                                                              log("uuid new");
+                                                                              Navigator.push(
+                                                                                  context,
+                                                                                  CupertinoPageRoute(
+                                                                                      builder: (context) => Chat_screen(
+                                                                                            chatId: uuId,
+                                                                                            image: (_getReferbyAgentModel != null && _getReferbyAgentModel!.data!.isNotEmpty && _getReferbyAgentModel!.data![index].profileImage!.isNotEmpty) ? _getReferbyAgentModel!.data![index].profileImage![0].filePath.toString() : "",
+                                                                                            name: _getReferbyAgentModel!.data![index].firstname.toString() + ' ' + _getReferbyAgentModel!.data![index].lastname.toString(),
+                                                                                          )));
+                                                                            } else {
+                                                                              log("uuid old");
+
+                                                                              Navigator.push(
+                                                                                  context,
+                                                                                  CupertinoPageRoute(
+                                                                                      builder: (context) => Chat_screen(
+                                                                                            chatId: chatId,
+                                                                                            image: (_getReferbyAgentModel != null && _getReferbyAgentModel!.data!.isNotEmpty && _getReferbyAgentModel!.data![index].profileImage!.isNotEmpty) ? _getReferbyAgentModel!.data![index].profileImage![0].filePath.toString() : "",
+                                                                                            name: _getReferbyAgentModel!.data![index].firstname.toString() + ' ' + _getReferbyAgentModel!.data![index].lastname.toString(),
+                                                                                          )));
+                                                                            }
+                                                                          });
+
+                                                                          /// ----------- firebase chat module end -----------
+                                                                          /*  Navigator
                                                                               .push(
                                                                             context,
                                                                             CupertinoPageRoute(
                                                                               builder: (context) => Message_screen(),
                                                                             ),
-                                                                          );
+                                                                          ); */
                                                                         },
                                                                         child:
                                                                             Container(
@@ -1511,7 +2214,7 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                             EdgeInsets.all(4),
                                                         child: Container(
                                                           height: 210,
-                                                          decoration: (_recentlyVisitedToYouModel != null &&
+                                                          /* decoration: (_recentlyVisitedToYouModel != null &&
                                                                   _recentlyVisitedToYouModel!
                                                                           .data !=
                                                                       null &&
@@ -1554,24 +2257,84 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                                               .femaleProfileUser),
                                                                       fit: BoxFit
                                                                           .cover),
-                                                                ),
-                                                          child: Column(
+                                                                ), */
+                                                          child: Stack(
                                                             children: [
-                                                              Spacer(),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        bottom:
-                                                                            0),
+                                                              ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            13.0),
+                                                                child: _recentlyVisitedToYouModel != null &&
+                                                                        _recentlyVisitedToYouModel!.data !=
+                                                                            null &&
+                                                                        _recentlyVisitedToYouModel!
+                                                                            .data![
+                                                                                index]
+                                                                            .profileImage!
+                                                                            .isNotEmpty
+                                                                    ? (_recentlyVisitedToYouModel!.data![index].blurImage ==
+                                                                            1)
+                                                                        ? ImageFiltered(
+                                                                            imageFilter:
+                                                                                ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                                                            child:
+                                                                                CachedNetworkImage(
+                                                                              imageUrl: _recentlyVisitedToYouModel!.data![index].profileImage![0].filePath.toString(),
+                                                                              fit: BoxFit.cover,
+                                                                              height: 235,
+                                                                              width: MediaQuery.of(context).size.width,
+                                                                            ),
+                                                                          )
+                                                                        : CachedNetworkImage(
+                                                                            imageUrl:
+                                                                                _recentlyVisitedToYouModel!.data![index].profileImage![0].filePath.toString(),
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                            height:
+                                                                                235,
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width,
+                                                                          )
+                                                                    : (_recentlyVisitedToYouModel != null &&
+                                                                            _recentlyVisitedToYouModel!.data !=
+                                                                                null &&
+                                                                            _recentlyVisitedToYouModel!.data![index].gender ==
+                                                                                "Male")
+                                                                        ? Image
+                                                                            .asset(
+                                                                            ImagePath.profile,
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                            height:
+                                                                                207,
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width,
+                                                                          )
+                                                                        : Image
+                                                                            .asset(
+                                                                            ImagePath.femaleProfileUser,
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                            height:
+                                                                                207,
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width,
+                                                                          ),
+                                                              ),
+                                                              // Spacer(),
+                                                              Align(
+                                                                alignment: Alignment
+                                                                    .bottomCenter,
                                                                 child:
                                                                     Container(
+                                                                  height: 75,
                                                                   decoration:
                                                                       BoxDecoration(
                                                                     color: Color(
                                                                             0xffffffff)
                                                                         .withOpacity(
-                                                                            0.9),
+                                                                            0.5),
                                                                     borderRadius:
                                                                         BorderRadius
                                                                             .only(
@@ -1601,12 +2364,14 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                                           mainAxisAlignment:
                                                                               MainAxisAlignment.start,
                                                                           children: [
-                                                                            Image.asset(
-                                                                              ImagePath.dualprofile,
-                                                                              color: currentColor,
-                                                                              height: 16,
-                                                                              width: 16,
-                                                                            ),
+                                                                            (_recentlyVisitedToYouModel != null && _recentlyVisitedToYouModel!.data != null && _recentlyVisitedToYouModel!.data![index].isAgent == "0")
+                                                                                ? Image.asset(
+                                                                                    ImagePath.dualprofile,
+                                                                                    color: currentColor,
+                                                                                    height: 16,
+                                                                                    width: 16,
+                                                                                  )
+                                                                                : Container(),
                                                                             SizedBox(
                                                                               width: 5,
                                                                             ),
@@ -1616,10 +2381,10 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                                                 _recentlyVisitedToYouModel != null && _recentlyVisitedToYouModel!.data != null
                                                                                     ? _recentlyVisitedToYouModel!.data![index].firstname! +
                                                                                         " " /* +
-                                                                    _getMyMatchModel!
-                                                                        .data![
-                                                                            index]
-                                                                        .lastname! + */
+                                                                _getMyMatchModel!
+                                                                    .data![
+                                                                        index]
+                                                                    .lastname! + */
                                                                                             " ," +
                                                                                         _recentlyVisitedToYouModel!.data![index].age.toString()
                                                                                     : '',
@@ -1654,13 +2419,103 @@ class _DiscoverFeedState extends State<DiscoverFeed> {
                                                                           child:
                                                                               GestureDetector(
                                                                             onTap:
-                                                                                () {
-                                                                              Navigator.push(
+                                                                                () async {
+                                                                              /// ----------- firebase chat module start -----------
+
+                                                                              Uuid uuid = Uuid();
+                                                                              String chatId = "";
+                                                                              String uuId = uuid.v4();
+                                                                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                                              String userId = await prefs.getString(USER_ID)!;
+                                                                              String userName = await prefs.getString(FULLNAME)!;
+                                                                              String userProfile = await prefs.getString(PROFILEIMAGE)!;
+                                                                              FirebaseFirestore firestore = FirebaseFirestore.instance;
+                                                                              bool? alreadyChat = false;
+                                                                              List chatData = [];
+                                                                              await firestore.collection("Users").where("userId", isEqualTo: userId).get().then((value) async {
+                                                                                value.docs.forEach((element) async {
+                                                                                  if (element.data()["chats"] != null) {
+                                                                                    setState(() {
+                                                                                      chatData = element.data()["chats"];
+                                                                                    });
+                                                                                    element.data()["chats"].forEach((value) {
+                                                                                      log("user id :: ${value["userId"].toString()}");
+                                                                                      log("user id :: ${_getRecentlyVisitModel!.data![index].userId.toString()}");
+                                                                                      log("user id :: ${value["userId"].toString() == _getRecentlyVisitModel!.data![index].userId.toString()}");
+                                                                                      if (value["userId"].toString() == _getRecentlyVisitModel!.data![index].userId.toString()) {
+                                                                                        setState(() {
+                                                                                          alreadyChat = true;
+                                                                                          chatId = value["chatId"].toString();
+                                                                                        });
+                                                                                      }
+                                                                                    });
+                                                                                  } else {
+                                                                                    setState(() {
+                                                                                      alreadyChat = false;
+                                                                                    });
+                                                                                  }
+                                                                                });
+                                                                              }).whenComplete(() async {
+                                                                                if (alreadyChat! == false) {
+                                                                                  setState(() {
+                                                                                    chatData.add({
+                                                                                      "chatId": uuId,
+                                                                                      "userId": _getRecentlyVisitModel!.data![index].userId.toString(),
+                                                                                      "userName": _getRecentlyVisitModel!.data![index].firstname.toString(),
+                                                                                      "userProfile": _getRecentlyVisitModel!.data![index].profileImage![0].filePath.toString(),
+                                                                                    });
+                                                                                  });
+                                                                                  await firestore.collection("Users").doc(userId).set({
+                                                                                    "chats": chatData,
+                                                                                  }, SetOptions(merge: true));
+                                                                                  List chats = [];
+                                                                                  firestore.collection("Users").doc(_getRecentlyVisitModel!.data![index].userId.toString()).get().then((value) {
+                                                                                    setState(() {
+                                                                                      chats = value.data()!["chats"];
+                                                                                    });
+                                                                                  });
+
+                                                                                  setState(() {
+                                                                                    chats.add({
+                                                                                      "chatId": uuId,
+                                                                                      "userId": userId,
+                                                                                      "userName": userName,
+                                                                                      "userProfile": userProfile,
+                                                                                    });
+                                                                                  });
+                                                                                  await firestore.collection("Users").doc(_getRecentlyVisitModel!.data![index].userId.toString()).set({
+                                                                                    "chats": chats,
+                                                                                  }, SetOptions(merge: true));
+                                                                                  log("uuid new");
+                                                                                  Navigator.push(
+                                                                                      context,
+                                                                                      CupertinoPageRoute(
+                                                                                          builder: (context) => Chat_screen(
+                                                                                                chatId: uuId,
+                                                                                                image: (_getRecentlyVisitModel != null && _getRecentlyVisitModel!.data!.isNotEmpty && _getRecentlyVisitModel!.data![index].profileImage!.isNotEmpty) ? _getRecentlyVisitModel!.data![index].profileImage![0].filePath.toString() : "",
+                                                                                                name: _getRecentlyVisitModel!.data![index].firstname.toString() + ' ' + _getRecentlyVisitModel!.data![index].lastname.toString(),
+                                                                                              )));
+                                                                                } else {
+                                                                                  log("uuid old");
+
+                                                                                  Navigator.push(
+                                                                                      context,
+                                                                                      CupertinoPageRoute(
+                                                                                          builder: (context) => Chat_screen(
+                                                                                                chatId: chatId,
+                                                                                                image: (_getRecentlyVisitModel != null && _getRecentlyVisitModel!.data!.isNotEmpty && _getRecentlyVisitModel!.data![index].profileImage!.isNotEmpty) ? _getRecentlyVisitModel!.data![index].profileImage![0].filePath.toString() : "",
+                                                                                                name: _getRecentlyVisitModel!.data![index].firstname.toString() + ' ' + _getRecentlyVisitModel!.data![index].lastname.toString(),
+                                                                                              )));
+                                                                                }
+                                                                              });
+
+                                                                              /// ----------- firebase chat module end -----------
+                                                                              /*   Navigator.push(
                                                                                 context,
                                                                                 CupertinoPageRoute(
                                                                                   builder: (context) => Message_screen(),
                                                                                 ),
-                                                                              );
+                                                                              ); */
                                                                             },
                                                                             child:
                                                                                 Container(

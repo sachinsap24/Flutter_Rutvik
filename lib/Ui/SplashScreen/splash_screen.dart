@@ -74,12 +74,12 @@ class _Splash_screenState extends State<Splash_screen> {
 
     Future.delayed(const Duration(seconds: 4), () {
       if (mounted) {
-        setState(() {
+        setState(() async {
           if (showOnboarding == true) {
             if (showLogin == true && showOtp == true) {
               if (selectColor == 4284717308) {
                 currentGradient = [
-                  Color(0xff6398FC),
+                  Color(0xff6398FC),  
                   Color(0xff6398FC),
                 ];
                 currentColor = Color(0xff6398FC);
@@ -117,10 +117,12 @@ class _Splash_screenState extends State<Splash_screen> {
                       ),
                     ));
               } else if (showRegister == true && showUploadImage == false) {
+                 SharedPreferences prefs = await SharedPreferences.getInstance();
+                String userId = await prefs.getString(USER_ID)!;
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailScreen2(userNumber: mobileNo!),
+                    builder: (context) => DetailScreen2(userNumber: mobileNo!, docId: userId,),
                   ),
                 );
               } else {

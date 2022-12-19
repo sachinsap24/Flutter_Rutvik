@@ -15,6 +15,7 @@ const String MYSELFONELINE = 'mySelfOneLine';
 const String MYSELF = 'mySelf';
 const String SELECTCOLOR = 'selectColor';
 const String SWIPEVAL = 'swipeVal';
+const String BLURIMAGE = 'blurImageValue';
 
 const String EXESHOWLOGIN = 'exeLogin';
 const String EXESHOWOTP = 'exeshowotp';

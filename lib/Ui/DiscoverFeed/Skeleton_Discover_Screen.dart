@@ -22,19 +22,15 @@ class _Skeleton_DiscoverState extends State<Skeleton_Discover> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
-                  child: Expanded(
-                    child: SkeletonParagraph(
-                      style: SkeletonParagraphStyle(
-                          lines: 1,
-                          spacing: 6,
-                          lineStyle: SkeletonLineStyle(
-                            // randomLength: true,
-                            height: 10,
-                            width: MediaQuery.of(context).size.width / 2,
-                            borderRadius: BorderRadius.circular(8),
-                            // minLength: 10.0,
-                          )),
-                    ),
+                  child: SkeletonParagraph(
+                    style: SkeletonParagraphStyle(
+                        lines: 1,
+                        spacing: 6,
+                        lineStyle: SkeletonLineStyle(
+                          height: 10,
+                          width: MediaQuery.of(context).size.width / 2,
+                          borderRadius: BorderRadius.circular(8),
+                        )),
                   ),
                 ),
                 SizedBox(
@@ -91,18 +87,16 @@ class _Skeleton_DiscoverState extends State<Skeleton_Discover> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
-                  child: Expanded(
-                    child: SkeletonParagraph(
-                      style: SkeletonParagraphStyle(
-                          lines: 1,
-                          spacing: 6,
-                          lineStyle: SkeletonLineStyle(
-                            // randomLength: true,
-                            height: 10,
-                            width: MediaQuery.of(context).size.width / 3,
-                            borderRadius: BorderRadius.circular(8),
-                          )),
-                    ),
+                  child: SkeletonParagraph(
+                    style: SkeletonParagraphStyle(
+                        lines: 1,
+                        spacing: 6,
+                        lineStyle: SkeletonLineStyle(
+                          // randomLength: true,
+                          height: 10,
+                          width: MediaQuery.of(context).size.width / 3,
+                          borderRadius: BorderRadius.circular(8),
+                        )),
                   ),
                 ),
                 GridView.builder(

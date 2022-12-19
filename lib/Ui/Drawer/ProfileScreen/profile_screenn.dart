@@ -7,6 +7,7 @@ import 'package:blur/blur.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:countup/countup.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,6 +19,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:matrimonial_app/Core/Constant/CommonUtils.dart';
 import 'package:matrimonial_app/Core/Constant/Skeleton_Loader.dart';
+import 'package:matrimonial_app/Core/Constant/globle.dart';
 import 'package:matrimonial_app/Core/Constant/url_constant.dart';
 import 'package:matrimonial_app/Core/Constant/value_constants.dart';
 import 'package:matrimonial_app/ModelClass/UserPanel_ModelClass/Get_Profile_Data_Model.dart'
@@ -149,7 +151,7 @@ class _ProfileState extends State<Profile> {
       var _compressedImage = await AppHelper.compress(image: image);
       final _sizeInKbAfter = _compressedImage.lengthSync() / 1024;
       print('After Compress $_sizeInKbAfter kb');
-      var _croppedImage = await AppHelper.cropImage(_compressedImage);
+      var _croppedImage = await AppHelper.cropImage(_compressedImage, isCover);
       if (_croppedImage == null) {
         return;
       }
@@ -490,7 +492,10 @@ class _ProfileState extends State<Profile> {
                                                                     .profileImage!
                                                                     .length >
                                                                 0
-                                                        ? blurImage == true
+                                                        ? _userAboutMeModel!
+                                                                    .data!
+                                                                    .blurImage ==
+                                                                1
                                                             ? Blur(
                                                                 blur: 1,
                                                                 borderRadius:
@@ -522,7 +527,8 @@ class _ProfileState extends State<Profile> {
                                                                       .toString(),
                                                                 ),
                                                               )
-                                                        : (_getAllProfileDataModel != null &&
+                                                        : (_getAllProfileDataModel !=
+                                                                    null &&
                                                                 _getAllProfileDataModel!
                                                                         .data !=
                                                                     null &&
@@ -684,7 +690,92 @@ class _ProfileState extends State<Profile> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Container(
+                                            Text(
+                                              "completion".tr,
+                                              style: fontStyle.copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 15),
+                                            ),
+                                            Row(
+                                              children: [
+                                                Countup(
+                                                  begin: 0,
+                                                  end: _getAllProfileDataModel != null &&
+                                                          _getAllProfileDataModel!
+                                                                  .data !=
+                                                              null &&
+                                                          _getAllProfileDataModel!
+                                                                  .data!
+                                                                  .profile !=
+                                                              null
+                                                      ? double.parse(
+                                                          _getAllProfileDataModel!
+                                                              .data!
+                                                              .profile!
+                                                              .profileCompletion
+                                                              .toString())
+                                                      : 0.0,
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  separator: ',',
+                                                  suffix: "%",
+                                                  style: TextStyle(
+                                                      color: currentColor,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                                Text(" now.".tr),
+                                                InkWell(
+                                                  onTap: () async {
+                                                    
+                                                    String? valueData;
+                                                    final result =
+                                                        await Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Basic_Detail(),
+                                                      ),
+                                                    );
+                                                    setState(() {
+                                                      valueData = result;
+                                                    });
+                                                    log(valueData.toString());
+                                                    if (valueData ==
+                                                        "BasicDetail") {
+                                                      getProfileData();
+                                                      getProfileAboutMe();
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                      _getAllProfileDataModel !=
+                                                                  null &&
+                                                              _getAllProfileDataModel!
+                                                                  .data!
+                                                                  .profile!
+                                                                  .profileCompletion!
+                                                                  .isNotEmpty
+                                                          ? _getAllProfileDataModel!
+                                                                      .data!
+                                                                      .profile!
+                                                                      .profileCompletion
+                                                                      .toString() ==
+                                                                  "100"
+                                                              ? " Edit Here"
+                                                              : "completenow".tr
+                                                          : "",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xff12A2AB),
+                                                          fontSize: 13,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .underline)),
+                                                )
+                                              ],
+                                            ),
+                                            /* Container(
                                               child: RichText(
                                                 text: TextSpan(
                                                     text: "completion".tr,
@@ -694,8 +785,10 @@ class _ProfileState extends State<Profile> {
                                                         fontSize: 15),
                                                     children: [
                                                       TextSpan(text: ' \n'),
-                                                      TextSpan(
-                                                          text: _getAllProfileDataModel != null &&
+
+                                                      /* TextSpan(
+                                                          text: 
+                                                          _getAllProfileDataModel != null &&
                                                                   _getAllProfileDataModel!
                                                                           .data !=
                                                                       null &&
@@ -716,7 +809,7 @@ class _ProfileState extends State<Profile> {
                                                               fontSize: 14,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w600)),
+                                                                      .w600)), */
                                                       TextSpan(
                                                           text: " now.".tr),
                                                       TextSpan(
@@ -783,7 +876,7 @@ class _ProfileState extends State<Profile> {
                                                                       .underline))
                                                     ]),
                                               ),
-                                            ),
+                                            ), */
                                           ],
                                         ),
                                       ),
@@ -891,12 +984,40 @@ class _ProfileState extends State<Profile> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "aboutmeoneline".tr,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                (_getAllProfileDataModel != null &&
+                                            _getAllProfileDataModel!.data !=
+                                                null &&
+                                            _getAllProfileDataModel!.data!.basicInfo !=
+                                                null &&
+                                            _getAllProfileDataModel!
+                                                    .data!.basicInfo!.gender ==
+                                                "Male" &&
+                                            _getAllProfileDataModel!.data!
+                                                    .basicInfo!.createdBy ==
+                                                "Myself") ||
+                                        (_getAllProfileDataModel != null &&
+                                            _getAllProfileDataModel!.data !=
+                                                null &&
+                                            _getAllProfileDataModel!.data!.basicInfo !=
+                                                null &&
+                                            _getAllProfileDataModel!
+                                                    .data!.basicInfo!.gender ==
+                                                "Female" &&
+                                            _getAllProfileDataModel!.data!
+                                                    .basicInfo!.createdBy ==
+                                                "Myself")
+                                    ? Text(
+                                        "aboutmeoneline".tr,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : Text(
+                                        "Abouthiminoneline".tr,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                 (isSelfOneLine == true)
                                     ? GestureDetector(
                                         onTap: () {
@@ -998,12 +1119,40 @@ class _ProfileState extends State<Profile> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "aboutme".tr,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                (_getAllProfileDataModel != null &&
+                                            _getAllProfileDataModel!.data !=
+                                                null &&
+                                            _getAllProfileDataModel!.data!.basicInfo !=
+                                                null &&
+                                            _getAllProfileDataModel!
+                                                    .data!.basicInfo!.gender ==
+                                                "Male" &&
+                                            _getAllProfileDataModel!.data!
+                                                    .basicInfo!.createdBy ==
+                                                "Myself") ||
+                                        (_getAllProfileDataModel != null &&
+                                            _getAllProfileDataModel!.data !=
+                                                null &&
+                                            _getAllProfileDataModel!.data!.basicInfo !=
+                                                null &&
+                                            _getAllProfileDataModel!
+                                                    .data!.basicInfo!.gender ==
+                                                "Female" &&
+                                            _getAllProfileDataModel!.data!
+                                                    .basicInfo!.createdBy ==
+                                                "Myself")
+                                    ? Text(
+                                        "aboutme".tr,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : Text(
+                                        "abouthim".tr,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                 (isSelf == true)
                                     ? GestureDetector(
                                         onTap: () {
@@ -2447,8 +2596,10 @@ class _ProfileState extends State<Profile> {
                                       final value = await Navigator.push(
                                         context,
                                         CupertinoPageRoute(
-                                          builder: (context) =>
-                                              Looking_for(fromValue: "Edit"),
+                                          builder: (context) => Looking_for(
+                                              fromValue: "Edit",
+                                              gender: _getAllProfileDataModel!
+                                                  .data!.basicInfo!.gender),
                                         ),
                                       );
                                       setState(() {

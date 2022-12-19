@@ -352,11 +352,20 @@ class _SeeAllLikeProfileState extends State<SeeAllLikeProfile> {
                                                     //         .ellipsis,
                                                   ),
                                                 ),
-                                                Image.asset(
-                                                  ImagePath.peopleframe,
-                                                  width: 22,
-                                                  height: 22,
-                                                )
+                                                (_getArchiveModel != null &&
+                                                        _getArchiveModel!
+                                                                .data !=
+                                                            null &&
+                                                        _getArchiveModel!
+                                                                .data![index]
+                                                                .isAgent ==
+                                                            "0")
+                                                    ? Image.asset(
+                                                        ImagePath.peopleframe,
+                                                        width: 22,
+                                                        height: 22,
+                                                      )
+                                                    : Container()
                                               ],
                                             ),
                                           ),

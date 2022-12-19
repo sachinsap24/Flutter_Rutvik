@@ -222,7 +222,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                                                         widget.imgLength != null
                                                             ? widget.imgLength
                                                                 .toString()
-                                                            : "5",
+                                                            : "0",
                                                         style: TextStyle(
                                                             color: AppColors
                                                                 .colorWhite,
@@ -476,42 +476,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 20),
-                            Container(
-                              width: 148,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Color(0xffFCC8D0).withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(13),
-                                border: Border.all(
-                                    width: 2,
-                                    color: Color(0xffFB5A57).withOpacity(0.5)),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8.0, right: 8),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      ImagePath.eMailMsg,
-                                      height: 25,
-                                      width: 25,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "Gmail",
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 10),
                             Container(
                               width: 148,
                               height: 50,
@@ -550,6 +515,41 @@ class _HomeScreen1State extends State<HomeScreen1> {
                               ),
                             ),
                             SizedBox(height: 10),
+                            Container(
+                              width: 148,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Color(0xffFCC8D0).withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(13),
+                                border: Border.all(
+                                    width: 2,
+                                    color: Color(0xffFB5A57).withOpacity(0.5)),
+                              ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8.0, right: 8),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      ImagePath.eMailMsg,
+                                      height: 25,
+                                      width: 25,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      "Gmail",
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 20),
                           ],
                         ),
                       ],

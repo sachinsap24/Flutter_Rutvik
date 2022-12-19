@@ -16,13 +16,14 @@ import '../Home_screen/Home/Drawer_Screen.dart';
 
 class OTPScreen extends StatefulWidget {
   String text, mobile, email, fromValue;
+  bool? isSuccess;
   OTPScreen(
       {Key? key,
       required this.text,
       required this.mobile,
       required this.email,
       required this.fromValue,
-      uid,
+      this.isSuccess,
       String? countryCode})
       : super(key: key);
 
@@ -267,16 +268,27 @@ class _OTPScreenState extends State<OTPScreen> {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               if (widget.text == pinController.text) {
-                                if (widget.fromValue == "Login") {
-                                  prefs.setBool(SHOWOTPSCREEN, true);
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Zoom()),
-                                      (route) => false);
-                                } else if (widget.fromValue == "isRegister") {
-                                  Navigator.pop(context);
-                                } else {
+                                if (widget.isSuccess == true && widget.fromValue == "Login") {
+                                  // if (widget.fromValue == "Login") {
+                                    prefs.setBool(SHOWOTPSCREEN, true);
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Zoom()),
+                                        (route) => false);
+                                  } 
+                                  else if (widget.fromValue == "isRegister") {
+                                    Navigator.pop(context);
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Detail_screen(
+                                            userNumber: widget.mobile,
+                                          ),
+                                        ));
+                                  }
+                               /*  } else {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -284,7 +296,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                           userNumber: widget.mobile,
                                         ),
                                       ));
-                                }
+                                } */
                               } else {
                                 otperror = true;
                               }

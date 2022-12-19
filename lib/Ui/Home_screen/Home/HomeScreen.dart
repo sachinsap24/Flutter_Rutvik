@@ -131,6 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
       "title": "SLIDE LEFT TO SKIP",
       "icon": "assets/lottie/swipeleft.json",
     },
+    {
+      "title": "SLIDE UP TO SKIP",
+      "icon": "assets/lottie/swipeup.json",
+    },
   ];
   int card = 0;
   String? ifFirstTimeUser;
@@ -237,8 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 40,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
-                                color: /* AppColors.pink */ currentColor
-                                    .withOpacity(0.3)),
+                                color: currentColor.withOpacity(0.3)),
                             child: Center(
                               child: Image.asset(
                                 ImagePath.notify,
@@ -313,6 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     context,
                                     listen: false);
                                 print("index :: $index");
+                                AppConstants.index = 0;
                                 provider.users.clear();
                                 indexChnages(index);
                                 /*  setState(() {
@@ -635,14 +639,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                               ))
                           .toList(),
-                      if (ifFirstTimeUser == "true" && card < 2)
+                      if (ifFirstTimeUser == "true" && card < 3)
                         GestureDetector(
                           onHorizontalDragEnd: (DragEndDetails drag) {
                             if (drag.primaryVelocity == null) return;
                             log.log(
                                 "drag.primaryVelocity :: ${drag.primaryVelocity}");
-                            if (drag.primaryVelocity! < 0) {
+                            if (drag.primaryVelocity! < 0 && card < 2) {
                               log.log("left");
+                              setState(() {
+                                card = card + 1;
+                              });
+                            } else if (drag.primaryVelocity! < -1) {
+                              log.log("up");
                               setState(() {
                                 ifFirstTimeUser = "false";
                               });

@@ -333,9 +333,13 @@ class HobbiesDetailScreen extends State<Hobbies_Detail> {
                 onTap: () {
                   if (dataList.length < 5) {
                     selectItem(index);
-                  } else {
-                    if (imaglist[index].isSelected == false) {
+                  } /* else if (dataList.length == 5) {
+                    Fluttertoast.showToast(msg: "Maximum 5 hobbies selected");
+                  } */
+                  else {
+                    if (imaglist[index].isSelected == true) {
                       for (var k = 0; k < dataList.length; k++) {
+                        print("data list length ::: ${dataList.length}");
                         if (imaglist[index].label == dataList[k]) {
                           log(dataList[k]);
                           dataList.removeAt(k);
@@ -343,8 +347,6 @@ class HobbiesDetailScreen extends State<Hobbies_Detail> {
                         print("object items ======== $dataList");
                       }
                     }
-
-                    Fluttertoast.showToast(msg: "Maximum 5 hobbies selected");
                   }
                 },
                 child: Container(

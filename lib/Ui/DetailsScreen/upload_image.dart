@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,9 @@ enum ImageSourceType { gallery, camera }
 
 class DetailScreen2 extends StatefulWidget {
   String userNumber;
-  DetailScreen2({Key? key, required this.userNumber}) : super(key: key);
+  String docId;
+  DetailScreen2({Key? key, required this.userNumber, required this.docId})
+      : super(key: key);
 
   @override
   State<DetailScreen2> createState() => _DetailScreen2State();
@@ -69,7 +72,7 @@ class _DetailScreen2State extends State<DetailScreen2> {
       var _compressedImage = await AppHelper.compress(image: image);
       final _sizeInKbAfter = _compressedImage.lengthSync() / 1024;
       print('After Compress $_sizeInKbAfter kb');
-      var _croppedImage = await AppHelper.cropImage(_compressedImage);
+      var _croppedImage = await AppHelper.cropImage(_compressedImage, isCover);
       if (_croppedImage == null) {
         return;
       }
@@ -1041,6 +1044,16 @@ class _DetailScreen2State extends State<DetailScreen2> {
     log(response.data.toString());
     print(response.data);
     if (response.statusCode == 200) {
+      /// ----------- firebase chat module start -----------
+      prefs.setString(
+          PROFILEIMAGE, response.data["data"]["file_path"].toString());
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      await firestore.collection("Users").doc(widget.docId).set({
+        "userProfile": response.data["data"]["file_path"],
+      }, SetOptions(merge: true));
+
+      /// ----------- firebase chat module end -----------
       CommonUtils.hideProgressLoading();
 
       Fluttertoast.showToast(

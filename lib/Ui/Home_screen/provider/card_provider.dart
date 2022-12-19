@@ -189,6 +189,7 @@ class CardProvider extends ChangeNotifier {
   void resetUsers() {
     if (isDone == "false") {
       if (selectedMatches == 0) {
+        _users.clear();
         getNewUserDetailAPI();
         getUserCheck();
         print("new user api");
@@ -196,6 +197,7 @@ class CardProvider extends ChangeNotifier {
       } else if (selectedMatches == 1) {
         log.log("message::: $selectedMatches");
         print("todays matches api");
+        _users.clear();
         getTodayMatchDetailAPI();
 
         getUserCheck();
@@ -231,7 +233,7 @@ class CardProvider extends ChangeNotifier {
           _users.add(element);
           // print("User List ${_users[0].firstname}");
         });
-         isDone = "false";
+        isDone = "false";
 
         notifyListeners();
       }
@@ -251,7 +253,7 @@ class CardProvider extends ChangeNotifier {
       var response =
           await dio.get(GET_TODAY_MATCH_DETAIL_URL + "?" + queryString);
       if (response.statusCode == 200) {
-        print("api response :: ${response.data}");
+        print("api todays response :: ${response.data}");
 
         _todayMatchDetailModel = TodayMatchDetailModel.fromJson(response.data);
         hide = true;
@@ -259,7 +261,7 @@ class CardProvider extends ChangeNotifier {
           _users.add(element);
           // print("User List ${_users[0].firstname}");
         });
-        print("data todays:::::::::::: ${_users.length}");
+        // print("data todays:::::::::::: ${_users.length}");
         isDone = "false";
 
         notifyListeners();

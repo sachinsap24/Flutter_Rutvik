@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:matrimonial_app/Executive%20Ui/widget/submit_button.dart';
 import 'package:matrimonial_app/Utils/image_path_constants.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class MatchDetails extends StatefulWidget {
   String? image1;
@@ -408,11 +413,28 @@ class _MatchDetailsState extends State<MatchDetails> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: Image.asset(
-              ImagePath.shareframe,
-              color: Colors.black,
-              height: height * 0.020,
-              width: width * 0.070,
+            child: InkWell(
+              onTap: () async {
+                if (Platform.isAndroid) {
+                  var url = widget.image2.toString();
+                  var response = await get(Uri.parse(url));
+                  final documentDirectory =
+                      (await getExternalStorageDirectory())!.path;
+                  File imgFile = new File('$documentDirectory/flutter.png');
+                  imgFile.writeAsBytesSync(response.bodyBytes);
+
+                  Share.shareFiles(
+                    [('$documentDirectory/flutter.png')],
+                    subject: 'URL conversion + Share',
+                  );
+                } else {}
+              },
+              child: Image.asset(
+                ImagePath.shareframe,
+                color: Colors.black,
+                height: height * 0.020,
+                width: width * 0.070,
+              ),
             ),
           )
         ],

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -6,6 +7,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:matrimonial_app/Core/Constant/CommonUtils.dart';
 import 'package:matrimonial_app/Core/Constant/url_constant.dart';
 import 'package:matrimonial_app/Core/Constant/value_constants.dart';
@@ -20,6 +23,8 @@ import 'package:matrimonial_app/Utils/app_constants.dart';
 import 'package:matrimonial_app/Utils/color_constants.dart';
 import 'package:matrimonial_app/Utils/image_path_constants.dart';
 import 'package:matrimonial_app/Utils/text_styles.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -542,8 +547,9 @@ class _Match_screenState extends State<Match_screen> {
                                 builder: (context) => MatchDetails(
                                     image1: (_userAboutMeModel != null &&
                                             _userAboutMeModel!.data != null &&
-                                            _userAboutMeModel!
-                                                    .data!.profileImage!.length > 0)
+                                            _userAboutMeModel!.data!
+                                                    .profileImage!.length >
+                                                0)
                                         ? _userAboutMeModel!
                                             .data!.profileImage![0].filePath
                                             .toString()
@@ -595,10 +601,33 @@ class _Match_screenState extends State<Match_screen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: Image.asset(
-              ImagePath.shareframe,
-              height: height * 0.020,
-              width: width * 0.070,
+            child: InkWell(
+              onTap: () async {
+                if (Platform.isAndroid) {
+                  var url = widget.image.toString();
+                  var response = await get(Uri.parse(url));
+                  final documentDirectory =
+                      (await getExternalStorageDirectory())!.path;
+                  File imgFile = new File('$documentDirectory/flutter.png');
+                  imgFile.writeAsBytesSync(response.bodyBytes);
+
+                  Share.shareFiles(
+                    [('$documentDirectory/flutter.png')],
+                    subject: 'URL conversion + Share',
+                    text: widget.name,
+                  );
+                } else {
+                  Share.share(
+                    widget.name.toString(),
+                    subject: 'URL conversion + Share',
+                  );
+                }
+              },
+              child: Image.asset(
+                ImagePath.shareframe,
+                height: height * 0.020,
+                width: width * 0.070,
+              ),
             ),
           )
         ],

@@ -31,9 +31,11 @@ class Data {
   String? gender;
   List<ProfileImage>? profileImage;
   int? userId;
+  int? blurImage;
   var age;
   String? maritalStatus;
   String? height;
+  String? isAgent;
 
   Data(
       {this.firstname,
@@ -42,8 +44,10 @@ class Data {
       this.gender,
       this.profileImage,
       this.userId,
+      this.blurImage,
       this.age,
       this.maritalStatus,
+      this.isAgent,
       this.height});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -58,9 +62,11 @@ class Data {
       });
     }
     userId = json['user_id'];
+    blurImage = json['blur_image'];
     age = json['age'];
     maritalStatus = json['marital_status'];
     height = json['height'];
+    isAgent = json['is_agent'];
   }
 
   Map<String, dynamic> toJson() {
@@ -73,9 +79,11 @@ class Data {
       data['profileImage'] = this.profileImage!.map((v) => v.toJson()).toList();
     }
     data['user_id'] = this.userId;
+    data['blur_image'] = this.blurImage;
     data['age'] = this.age;
     data['marital_status'] = this.maritalStatus;
     data['height'] = this.height;
+    data['is_agent'] = this.isAgent;
     return data;
   }
 }

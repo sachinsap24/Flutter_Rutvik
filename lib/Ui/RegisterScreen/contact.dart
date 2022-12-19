@@ -121,7 +121,7 @@ class _Contact_screenState extends State<Contact_screen> {
                               ],
                               controller: _contactNocontroller,
                               keyboardType: TextInputType.number,
-                              readOnly: (isGoogleLogin == true) ? false : true,
+                              readOnly: /* (isGoogleLogin == true) ? false : */ true,
                               decoration: InputDecoration(
                                   fillColor: Colors.grey.withOpacity(0.5),
                                   filled: true,
@@ -449,10 +449,12 @@ class _Contact_screenState extends State<Contact_screen> {
                                         : []),
                                 value: _countryData,
                                 onChanged: (newValue) {
-                                  print(newValue);
+                                  print(
+                                      "Country iD ::::::::::::::: ${newValue}");
                                   setState(() {
                                     _countryData = newValue;
                                   });
+                                  getState(_countryData!.id.toString());
                                 },
                               ),
                             ),
@@ -654,11 +656,9 @@ class _Contact_screenState extends State<Contact_screen> {
   void checkConnection() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
-      getState();
       getCountry();
       getContactData();
     } else if (connectivityResult == ConnectivityResult.wifi) {
-      getState();
       getCountry();
       getContactData();
     } else {
@@ -706,9 +706,9 @@ class _Contact_screenState extends State<Contact_screen> {
     }
   }
 
-  getState() async {
+  getState(String index) async {
     var response = await http.get(
-      Uri.parse(GET_STATE_URL),
+      Uri.parse(GET_STATE_URL + "?country=${index.toString()}"),
     );
 
     if (response.statusCode == 200) {

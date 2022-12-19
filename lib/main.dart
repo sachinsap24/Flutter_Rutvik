@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:matrimonial_app/Ui/Home_screen/provider/card_provider.dart';
 import 'package:matrimonial_app/Ui/SplashScreen/splash_screen.dart';
+import 'package:matrimonial_app/gridImageDemo.dart';
 import 'package:matrimonial_app/translations/LocalString.dart';
 import 'package:provider/provider.dart';
 
@@ -107,6 +108,7 @@ class _MyAppState extends State<MyApp> {
         ),
         debugShowCheckedModeBanner: false,
         home:
+        // GridImageDemo()
             // SkeletonLoader()
             // skelatonDemo()
             Splash_screen(),

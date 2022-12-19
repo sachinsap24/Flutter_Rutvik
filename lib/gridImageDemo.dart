@@ -1,67 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:matrimonial_app/Utils/image_path_constants.dart';
 
-class GridImageDemo extends StatelessWidget {
+class GridImageDemo extends StatefulWidget {
   const GridImageDemo({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: SafeArea(
-        child: Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: 
+  State<GridImageDemo> createState() => _GridImageDemoState();
+}
 
-                StaggeredGrid.count(
-              crossAxisCount: 4,
-              mainAxisSpacing: 4,
-              crossAxisSpacing: 4,
-              children: [
-                StaggeredGridTile.count(
-                    crossAxisCellCount: 4,
-                    mainAxisCellCount: 2,
-                    child: Image.asset(
-                      ImagePath.multiimge1,
-                      fit: BoxFit.fill,
-                    )),
-                StaggeredGridTile.count(
-                    crossAxisCellCount: 1,
-                    mainAxisCellCount: 1,
-                    child: Image.asset(
-                      ImagePath.multiimge2,
-                      fit: BoxFit.fill,
-                    )),
-                StaggeredGridTile.count(
-                    crossAxisCellCount: 1,
-                    mainAxisCellCount: 1,
-                    child: Image.asset(
-                      ImagePath.multiimge3,
-                      fit: BoxFit.fill,
-                    )),
-                StaggeredGridTile.count(
-                  crossAxisCellCount: 1,
-                  mainAxisCellCount: 1,
-                  child: Image.asset(
-                    ImagePath.multiimge2,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                StaggeredGridTile.count(
-                  crossAxisCellCount: 1,
-                  mainAxisCellCount: 1,
-                  child: Image.asset(
-                    ImagePath.multiimge3,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+class _GridImageDemoState extends State<GridImageDemo> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+          body: Container(
+            child: StaggeredGridView.countBuilder(
+        itemCount: null,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        crossAxisCount: 2,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+            return (index % 5 == 0)
+                ? Container(
+                    height: 100,
+                    width: 100,
+                    color: Colors.blueAccent,
+                    child: Text("hello"),
+                  )
+                : Container(
+                    height: 100,
+                    width: 100,
+                    color: Colors.blueGrey,
+                    child: Text("Hey"),
+                  );
+        },
+        staggeredTileBuilder: (index) {
+            StaggeredTile.count(2, index % 5 == 0 ? 2 : 1);
+        },
       ),
+          )),
     );
   }
 }

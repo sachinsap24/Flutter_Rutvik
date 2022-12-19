@@ -14,6 +14,16 @@ class AlertDailog extends StatefulWidget {
 }
 
 class _AlertDailogState extends State<AlertDailog> {
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration(seconds: 5),(){
+      
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
